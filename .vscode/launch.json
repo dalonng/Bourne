@@ -1,0 +1,40 @@
+{
+  "configurations": [
+    {
+      "type": "lldb",
+      "request": "launch",
+      "sourceLanguages": [
+        "swift"
+      ],
+      "args": [],
+      "cwd": "${workspaceFolder:Bourne}",
+      "name": "Debug BourneClient",
+      "program": "${workspaceFolder:Bourne}/.build/debug/BourneClient",
+      "preLaunchTask": "swift: Build Debug BourneClient"
+    },
+    {
+      "name": "Swift: Test",
+      "type": "lldb",
+      "request": "launch",
+      "program": "${workspaceFolder}/.build/debug/BournePackageTests.xctest",
+      "args": [
+        "test"
+      ],
+      "cwd": "${workspaceFolder:Bourne}",
+      "preLaunchTask": "swift-tests",
+      "internalConsoleOptions": "openOnSessionStart"
+    },
+    {
+      "type": "lldb",
+      "request": "launch",
+      "sourceLanguages": [
+        "swift"
+      ],
+      "args": [],
+      "cwd": "${workspaceFolder:Bourne}",
+      "name": "Release BourneClient",
+      "program": "${workspaceFolder:Bourne}/.build/release/BourneClient",
+      "preLaunchTask": "swift: Build Release BourneClient"
+    }
+  ]
+}
