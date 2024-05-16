@@ -13,6 +13,6 @@ import SwiftSyntaxMacros
 struct BournePlugin: CompilerPlugin {
   let providingMacros: [Macro.Type] = [
     StringifyMacro.self,
-    AutoCodableMacro.self,
+    BourneMacro.self,
   ]
 }

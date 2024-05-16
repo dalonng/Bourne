@@ -12,7 +12,7 @@ import SwiftSyntaxMacros
 public struct AutoCodableMacro: MemberMacro {
   public static func expansion(of node: AttributeSyntax, providingMembersOf declaration: some DeclGroupSyntax, conformingTo protocols: [TypeSyntax], in context: some MacroExpansionContext) throws -> [DeclSyntax] {
     guard let structDecl = declaration.as(StructDeclSyntax.self) else {
-      throw AutoCodableMacroError.missingStructDeclaration
+      throw AutoCodableMacroError.mustBeStruct
     }
 
 //    let structName = structDecl.name.text
@@ -86,7 +86,7 @@ public struct AutoCodableMacro: MemberMacro {
 }
 
 enum AutoCodableMacroError: Error {
-  case missingStructDeclaration
+  case mustBeStruct
   case missingLetKeyword
   case unsupportedType
 }

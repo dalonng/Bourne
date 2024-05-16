@@ -7,8 +7,9 @@ let (result, code) = #stringify(a + b)
 
 print("The value \(result) was produced by the code \"\(code)\"")
 
-@AutoCodable
+@Bourne
 struct Person: Codable {
   let name: String
   let age: Int
+  let isChild: Bool
 }

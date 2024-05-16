@@ -10,11 +10,5 @@
 @freestanding(expression)
 public macro stringify<T>(_ value: T) -> (T, String) = #externalMacro(module: "BourneMacros", type: "StringifyMacro")
 
-@attached(peer, names: overloaded)
-public macro AddAsync() = #externalMacro(module: "BourneMacros", type: "AddAsyncMacro")
-
-@attached(peer)
-public macro BourneJson() = #externalMacro(module: "BourneMacros", type: "BourneJsonMacro")
-
-@attached(member, names: arbitrary)
-public macro AutoCodable() = #externalMacro(module: "BourneMacros", type: "AutoCodableMacro")
+@attached(extension, names: arbitrary)
+public macro Bourne() = #externalMacro(module: "BourneMacros", type: "BourneMacro")
