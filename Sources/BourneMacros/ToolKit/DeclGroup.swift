@@ -9,11 +9,11 @@ import SwiftSyntax
 
 struct DeclGroup<WrappedSyntax: DeclGroupSyntax>: DeclGroupProtocol {
   var _syntax: WrappedSyntax
-  
+
   init(_ syntax: WrappedSyntax) {
     _syntax = syntax
   }
-  
+
   var identifier: String {
     if let s = asStruct {
       s.identifier
@@ -23,11 +23,11 @@ struct DeclGroup<WrappedSyntax: DeclGroupSyntax>: DeclGroupProtocol {
       fatalError("Unsupported decl group type '\(type(of: _syntax))'")
     }
   }
-  
+
   var asStruct: Struct? {
     Struct(_syntax)
   }
-  
+
   var asEnum: Enum? {
     Enum(_syntax)
   }

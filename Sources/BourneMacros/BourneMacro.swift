@@ -10,7 +10,10 @@ import SwiftSyntax
 import SwiftSyntaxMacros
 
 public struct BourneMacro: ExtensionMacro {
-  public static func expansion(of node: SwiftSyntax.AttributeSyntax, attachedTo declaration: some SwiftSyntax.DeclGroupSyntax, providingExtensionsOf type: some SwiftSyntax.TypeSyntaxProtocol, conformingTo protocols: [SwiftSyntax.TypeSyntax], in context: some SwiftSyntaxMacros.MacroExpansionContext) throws -> [SwiftSyntax.ExtensionDeclSyntax] {
+  public static func expansion(
+    of node: SwiftSyntax.AttributeSyntax, attachedTo declaration: some SwiftSyntax.DeclGroupSyntax, providingExtensionsOf type: some SwiftSyntax.TypeSyntaxProtocol,
+    conformingTo protocols: [SwiftSyntax.TypeSyntax], in context: some SwiftSyntaxMacros.MacroExpansionContext
+  ) throws -> [SwiftSyntax.ExtensionDeclSyntax] {
     let decl = DeclGroup(declaration)
 
     guard let structDecl = decl.asStruct else {
@@ -27,7 +30,6 @@ public struct BourneMacro: ExtensionMacro {
     }
 
     let cases = variables.names.map { "case \($0)" }.joined(separator: "\n")
-//    let parsedExtensionDecl = try SyntaxParser.parse(source: extensionDecl).as(ExtensionDeclSyntax.self)!
 
     return try [
       ExtensionDeclSyntax(
@@ -37,12 +39,12 @@ public struct BourneMacro: ExtensionMacro {
             \(raw: cases)
           }
 
-          init(from decoder: any Decoder) throws {
+          \(raw: structDecl.accessLevel.rawValue) init(from decoder: any Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
             \(raw: decodeStatements.joined(separator: "\n"))
           }
 
-          func encode(to encoder: any Encoder) throws {
+          \(raw: structDecl.accessLevel.rawValue) func encode(to encoder: any Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
             \(raw: encodeStatements.joined(separator: "\n"))
           }

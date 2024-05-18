@@ -1,0 +1,18 @@
+included:
+  - Sources
+  - Tests
+excluded:
+  - .build
+
+line_length: 200
+
+disabled_rules:
+
+identifier_name:
+  min_length: 3
+  max_length: 40
+  excluded: 
+    - a
+    - b
+    - id
+    - v

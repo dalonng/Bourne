@@ -23,5 +23,3 @@ public struct StringifyMacro: ExpressionMacro {
     return "(\(argument), \(literal: argument.description))"
   }
 }
-
-
