@@ -19,9 +19,7 @@ let package = Package(
   ],
   dependencies: [
     .package(url: "https://github.com/apple/swift-syntax.git", from: "510.0.2"),
-    .package(url: "https://github.com/pointfreeco/swift-macro-testing.git", from: "0.2.0"),
-    .package(url: "https://github.com/realm/SwiftLint.git", from: "0.55.1")
-
+    .package(url: "https://github.com/pointfreeco/swift-macro-testing.git", from: "0.2.0")
   ],
   targets: [
     .macro(
@@ -32,10 +30,7 @@ let package = Package(
       ]
     ),
 
-    .target(name: "Bourne", dependencies: ["BourneMacros"],
-            plugins: [
-              .plugin(name: "SwiftLintPlugin", package: "SwiftLint")
-            ]),
+    .target(name: "Bourne", dependencies: ["BourneMacros"]),
 
     .executableTarget(name: "BourneClient", dependencies: ["Bourne"]),
 

@@ -17,7 +17,7 @@ public struct BourneMacro: ExtensionMacro {
     let decl = DeclGroup(declaration)
 
     guard let structDecl = decl.asStruct else {
-      throw AutoCodableMacroError.mustBeStruct
+      throw BourneMacroError.mustBeStruct
     }
 
     let variables = structDecl.variables
@@ -59,4 +59,8 @@ extension [Variable] {
   var names: [String] {
     map(\.name)
   }
+}
+
+enum BourneMacroError: Error {
+  case mustBeStruct
 }
