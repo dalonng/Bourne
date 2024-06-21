@@ -31,6 +31,8 @@ public struct BourneMacro: ExtensionMacro {
 
     let cases = variables.names.map { "case \($0)" }.joined(separator: "\n")
 
+    let properties = variables.map { "\($0.name): \($0.defaultValue)" }.joined(separator: ",\n")
+
     return try [
       ExtensionDeclSyntax(
         """
@@ -48,6 +50,10 @@ public struct BourneMacro: ExtensionMacro {
             var container = encoder.container(keyedBy: CodingKeys.self)
             \(raw: encodeStatements.joined(separator: "\n"))
           }
+
+          \(raw: structDecl.accessLevel.rawValue) static let empty = \(type.trimmed)(
+            \(raw: properties)
+          )
         }
         """
       )

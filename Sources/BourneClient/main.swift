@@ -17,6 +17,12 @@ public struct Person2: Codable {
   let name: String
   let age: Int
   let isChild: Bool
+  
+  public init(name: String, age: Int, isChild: Bool) {
+    self.name = name
+    self.age = age
+    self.isChild = isChild
+  }
 }
 
 @Bourne
