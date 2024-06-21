@@ -20,7 +20,7 @@ public struct BourneMacro: ExtensionMacro {
       throw BourneMacroError.mustBeStruct
     }
 
-    let variables = structDecl.variables
+    let variables = structDecl.variables.filter(\.isNoInitializer)
     let decodeStatements = variables.map { v in
       "self.\(v.name) = try container.decodeIfPresent(\(v.type).self, forKey: .\(v.name)) ?? \(v.defaultValue)"
     }

@@ -25,6 +25,22 @@ public struct Variable {
     _syntax.bindings.first?.pattern.as(IdentifierPatternSyntax.self)?.identifier.text ?? ""
   }
 
+  var isLet: Bool {
+    _syntax.bindingSpecifier.tokenKind == .keyword(.let)
+  }
+
+  var isVar: Bool {
+    _syntax.bindingSpecifier.tokenKind == .keyword(.var)
+  }
+
+  var isNoInitializer: Bool {
+    !isReadOnly && _syntax.bindings.first?.initializer == nil
+  }
+
+  var isReadOnly: Bool {
+    _syntax.bindings.first?.accessorBlock?.accessors.as(CodeBlockItemListSyntax.self) != nil
+  }
+
   var propertyType: TypeSyntax {
     guard let binding = _syntax.bindings.first else {
       fatalError("Variable declaration must have a binding")
