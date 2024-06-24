@@ -1,6 +1,8 @@
 // The Swift Programming Language
 // https://docs.swift.org/swift-book
 
+import SwiftSyntaxBuilder
+
 /// A macro that produces both a value and a string containing the
 /// source code that generated the value. For example,
 ///
@@ -12,3 +14,6 @@ public macro stringify<T>(_ value: T) -> (T, String) = #externalMacro(module: "B
 
 @attached(extension, names: arbitrary)
 public macro Bourne() = #externalMacro(module: "BourneMacros", type: "BourneMacro")
+
+@attached(peer, names: arbitrary)
+public macro JSONProperty(defaultValue: Any? = nil, name: String = "") = #externalMacro(module: "BourneMacros", type: "JSONPropertyMacro")

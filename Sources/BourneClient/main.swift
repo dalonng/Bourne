@@ -17,7 +17,7 @@ public struct Person2: Codable {
   let name: String
   let age: Int
   let isChild: Bool
-  
+
   public init(name: String, age: Int, isChild: Bool) {
     self.name = name
     self.age = age
@@ -31,8 +31,12 @@ public struct UserInfo: Codable {
   public let createdAt: Int
   /// milliseconds
   public let updatedAt: Int
+  @JSONProperty(name: "emailName")
   public let did: String
+  @JSONProperty(defaultValue: "BUZZ", name: "emailName")
   public let email: String
+
+  @JSONProperty(defaultValue: -1)
   public let ipublicd: Int
   public let isNew: Int
 
@@ -66,15 +70,6 @@ func main() {
   let syntaxTree = Parser.parse(source: source)
   let analyzer = VariableAnalyzer(viewMode: .all)
   analyzer.walk(syntaxTree)
-
-//  // Parse the source code in sourceText into a syntax tree
-//  let sourceFile: SourceFileSyntax = Parser.parse(source: source)
-//
-//  // The "description" of the source tree is the source-accurate view of what was parsed.
-//  assert(sourceFile.description == source)
-//
-//  // Visualize the complete syntax tree.
-//  dump(sourceFile)
 }
 
 main()
