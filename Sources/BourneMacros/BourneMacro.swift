@@ -33,6 +33,14 @@ public struct BourneMacro: ExtensionMacro {
 
     let properties = variables.map { "\($0.name): \($0.defaultValue)" }.joined(separator: ",\n")
 
+//    let extensionDecl = try ExtensionDeclSyntax("extension \(type): Codable") {
+//      try generateCodingKeys(properties: variables)
+//      try generateInitializer(properties: properties, type: type)
+//      try generateEncoder(properties: properties)
+//    }
+//
+//    return [extensionDecl]
+
     return try [
       ExtensionDeclSyntax(
         """
@@ -59,6 +67,32 @@ public struct BourneMacro: ExtensionMacro {
       )
     ]
   }
+
+  private static func generateCodingKeys(properties: [Variable]) -> DeclSyntax {
+    let caseDeclarations = properties.names.map { "case \($0)" }.joined(separator: "\n")
+    return DeclSyntax("""
+    enum CodingKeys: String, CodingKey {
+        \(raw: caseDeclarations)
+    }
+    """)
+  }
+
+//  private static func generateInitializer(properties: [Variable], type: TypeSyntaxProtocol) throws -> DeclSyntax {
+//    let decodingStatements = properties.map { property, hasJSONProperty in
+//      if hasJSONProperty {
+//        "self.\(property) = try container.decodeIfPresent(\(type).\(property).self, forKey: .\(property)) ?? \(type).\(property)"
+//      } else {
+//        "self.\(property) = try container.decode(\(type).\(property).self, forKey: .\(property))"
+//      }
+//    }.joined(separator: "\n")
+//
+//    return DeclSyntax("""
+//    init(from decoder: Decoder) throws {
+//        let container = try decoder.container(keyedBy: CodingKeys.self)
+//        \(raw: decodingStatements)
+//    }
+//    """)
+//  }
 }
 
 extension [Variable] {

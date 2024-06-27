@@ -27,13 +27,13 @@ public struct JSONPropertyMacro: PeerMacro {
     }
 
     let defaultExpr = if let defaultValueExpr = argumentList.first(where: { $0.label?.text == "defaultValue" })?.expression {
-      "static let \(identifier)DefaultValue = \(defaultValueExpr)"
+      "static let \(identifier) = \(defaultValueExpr)"
     } else {
       ""
     }
 
     let nameExpr = if let nameExpr = argumentList.first(where: { $0.label?.text == "name" })?.expression {
-      "static let \(identifier)Nmae: String = \(nameExpr)"
+      "static let \(identifier)Name: String = \(nameExpr)"
     } else {
       ""
     }

@@ -11,10 +11,6 @@ import SwiftSyntax
 class VariableAnalyzer: SyntaxVisitor {
   override func visit(_ node: VariableDeclSyntax) -> SyntaxVisitorContinueKind {
     print("------------------------------")
-//    print(node.modifiers)
-//    print(node.bindingSpecifier)
-//    print(node.bindingSpecifier.kind)
-//    print(node.bindingSpecifier.tokenKind)
     let name = node.bindings.first?.pattern.as(IdentifierPatternSyntax.self)?.identifier.text ?? ""
 
     let isLet = node.bindingSpecifier.tokenKind == .keyword(.let)
@@ -35,14 +31,38 @@ class VariableAnalyzer: SyntaxVisitor {
       }
       if let identifierPattern = binding.pattern.as(IdentifierPatternSyntax.self) {
         print("IdentifierPattern: \(identifierPattern)")
-//        let accessors = binding.accessor?.accessors
-//        let isGetOnly = accessors?.allSatisfy { $0.is(GetAccessorSyntax.self) } ?? false
-//
-//        if let accessors {
-//          for accessor in accessors {
-//            print("Accessor: \(accessor)")
-//          }
-//        }
+      }
+    }
+
+    let property = node
+    let propertyName = node.bindings.first?.pattern.as(IdentifierPatternSyntax.self)?.identifier.text ?? ""
+    let attributes = property.attributes.compactMap { $0.as(AttributeSyntax.self) }
+    for attribute in attributes {
+      print("attribute: \(attribute):")
+      if let attributeName = attribute.attributeName.as(IdentifierTypeSyntax.self) {
+        print("\tattributeName: \(attributeName.name.text)")
+      }
+      if let arguments = attribute.arguments?.as(LabeledExprListSyntax.self) {
+        for element in arguments {
+          if let label = element.label?.text, let value = element.expression.as(StringLiteralExprSyntax.self)?.segments.first {
+            print("\t\tlabel: \(label), value: \(value)")
+          }
+        }
+      }
+    }
+
+    let hasJSONProperty = attributes.contains { $0.attributeName.as(IdentifierTypeSyntax.self)?.name.text == "JSONProperty" }
+    print("propertyName: \(propertyName)")
+
+    return .skipChildren
+  }
+
+  override func visit(_ node: AttributeSyntax) -> SyntaxVisitorContinueKind {
+    if let argumentList = node.arguments?.as(LabeledExprListSyntax.self) {
+      for element in argumentList {
+        if let label = element.label?.text, let value = element.expression.as(StringLiteralExprSyntax.self)?.segments.first {
+          print("Label: \(label), Value: \(value)")
+        }
       }
     }
     return .skipChildren

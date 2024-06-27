@@ -57,12 +57,14 @@ public struct UserInfo: Codable {
   }
 }
 
-let (result, code) = #stringify(a + b)
-
 let source = """
 struct Example {
-    let readOnlyLet = 42
-  let a
+  @JSONProperty(name: "emailName")
+  public let did: String
+  @JSONProperty(defaultValue: "BUZZ", name: "emailName")
+  public let email: String
+  @JSONProperty(defaultValue: -1)
+  public let ipublicd: Int
 }
 """
 
