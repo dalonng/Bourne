@@ -21,43 +21,75 @@ public struct BourneMacro: ExtensionMacro {
     }
 
     let variables = structDecl.variables.filter(\.isNoInitializer)
-    let decodeStatements = variables.map { v in
-      "self.\(v.name) = try container.decodeIfPresent(\(v.type).self, forKey: .\(v.name)) ?? \(v.defaultValue)"
+    let extensionDecl = try ExtensionDeclSyntax("extension \(type)") {
+      generateCodingKeys(properties: variables)
+      try generateInitializer(properties: variables, structDecl: structDecl)
+      try generateEncoder(properties: variables, structDecl: structDecl)
+      try generateEmpty(properties: variables, structDecl: structDecl)
     }
 
-    let encodeStatements = variables.map { v in
+    return [extensionDecl]
+  }
+
+  private static func generateCodingKeys(properties: [Variable]) -> DeclSyntax {
+    let caseDeclarations = properties.map { p in
+      if let attribute = p.attributes.first(where: { $0.name == "JSONProperty" }),
+         let name = attribute.argument(labeled: "name")
+      {
+        "case \(p.name) = \(name)"
+      } else {
+        "case \(p.name)"
+      }
+    }.joined(separator: "\n")
+    return DeclSyntax("""
+    enum CodingKeys: String, CodingKey {
+        \(raw: caseDeclarations)
+    }
+    """)
+  }
+
+  private static func generateInitializer(properties: [Variable], structDecl: Struct) throws -> DeclSyntax {
+    let decodingStatements = properties.map { p in
+      if let attribute = p.attributes.first(where: { $0.name == "JSONProperty" }), attribute.argument(labeled: "defaultValue") != nil {
+        "self.\(p.name) = try container.decodeIfPresent(\(p.type).self, forKey: .\(p.name)) ?? \(structDecl.identifier).\(p.name)"
+      } else {
+        "self.\(p.name) = try container.decodeIfPresent(\(p.type).self, forKey: .\(p.name)) ?? \(p.defaultValue)"
+      }
+    }.joined(separator: "\n")
+    return DeclSyntax("""
+    \(raw: structDecl.accessLevel.rawValue) init(from decoder: any Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        \(raw: decodingStatements)
+    }
+    """)
+  }
+
+  private static func generateEncoder(properties: [Variable], structDecl: Struct) throws -> DeclSyntax {
+    let encodeStatements = properties.map { v in
       "try container.encode(\(v.name), forKey: .\(v.name))"
+    }.joined(separator: "\n")
+
+    return DeclSyntax("""
+    \(raw: structDecl.accessLevel.rawValue) func encode(to encoder: any Encoder) throws {
+      var container = encoder.container(keyedBy: CodingKeys.self)
+        \(raw: encodeStatements)
     }
+    """)
+  }
 
-    let cases = variables.names.map { "case \($0)" }.joined(separator: "\n")
-
-    let properties = variables.map { "\($0.name): \($0.defaultValue)" }.joined(separator: ",\n")
-
-    return try [
-      ExtensionDeclSyntax(
-        """
-        extension \(type.trimmed) {
-          enum CodingKeys: String, CodingKey {
-            \(raw: cases)
-          }
-
-          \(raw: structDecl.accessLevel.rawValue) init(from decoder: any Decoder) throws {
-            let container = try decoder.container(keyedBy: CodingKeys.self)
-            \(raw: decodeStatements.joined(separator: "\n"))
-          }
-
-          \(raw: structDecl.accessLevel.rawValue) func encode(to encoder: any Encoder) throws {
-            var container = encoder.container(keyedBy: CodingKeys.self)
-            \(raw: encodeStatements.joined(separator: "\n"))
-          }
-
-          \(raw: structDecl.accessLevel.rawValue) static let empty = \(type.trimmed)(
-            \(raw: properties)
-          )
-        }
-        """
-      )
-    ]
+  private static func generateEmpty(properties: [Variable], structDecl: Struct) throws -> DeclSyntax {
+    let _properties = properties.map { p in
+      if let attribute = p.attributes.first(where: { $0.name == "JSONProperty" }), attribute.argument(labeled: "defaultValue") != nil {
+        "\(p.name): \(structDecl.identifier).\(p.name)"
+      } else {
+        "\(p.name): \(p.defaultValue)"
+      }
+    }.joined(separator: ",\n")
+    return DeclSyntax("""
+     \(raw: structDecl.accessLevel.rawValue) static let empty = \(raw: structDecl.identifier)(
+        \(raw: _properties)
+     )
+    """)
   }
 }
 

@@ -2,9 +2,6 @@ import Bourne
 import SwiftParser
 import SwiftSyntax
 
-let a = 17
-let b = 25
-
 @Bourne
 struct Person: Codable {
   let name: String
@@ -17,12 +14,7 @@ public struct Person2: Codable {
   let name: String
   let age: Int
   let isChild: Bool
-
-  public init(name: String, age: Int, isChild: Bool) {
-    self.name = name
-    self.age = age
-    self.isChild = isChild
-  }
+  let person: Person
 }
 
 @Bourne
@@ -31,7 +23,7 @@ public struct UserInfo: Codable {
   public let createdAt: Int
   /// milliseconds
   public let updatedAt: Int
-  @JSONProperty(name: "emailName")
+  @JSONProperty(name: "did_dfsfsd")
   public let did: String
   @JSONProperty(defaultValue: "BUZZ", name: "emailName")
   public let email: String
@@ -57,12 +49,9 @@ public struct UserInfo: Codable {
   }
 }
 
-let (result, code) = #stringify(a + b)
-
 let source = """
-struct Example {
-    let readOnlyLet = 42
-  let a
+public struct Person2: Codable {
+  let person: Person
 }
 """
 

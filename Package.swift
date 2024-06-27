@@ -29,7 +29,10 @@ let package = Package(
         .product(name: "SwiftCompilerPlugin", package: "swift-syntax")
       ]
     ),
-    .target(name: "Bourne", dependencies: ["BourneMacros"]),
+    .target(name: "Bourne",
+            dependencies: [
+              "BourneMacros"
+            ]),
     .executableTarget(name: "BourneClient",
                       dependencies: [
                         "Bourne",
