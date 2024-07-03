@@ -16,24 +16,22 @@ public struct JSONPropertyMacro: PeerMacro {
     providingPeersOf declaration: some DeclSyntaxProtocol,
     in context: some MacroExpansionContext
   ) throws -> [DeclSyntax] {
-    guard let argumentList = attribute.arguments?.as(LabeledExprListSyntax.self) else {
+    guard let variable = Variable(declaration), variable.name.isEmpty == false else {
+      fatalError("Invalid usage of @JSONProperty")
+    }
+    guard let attribute = variable.attributes.first(where: { $0.name == "JSONProperty" }) else {
       fatalError("Invalid usage of @JSONProperty")
     }
 
-    guard let variableDecl = declaration.as(VariableDeclSyntax.self),
-          let identifier = variableDecl.bindings.first?.pattern.as(IdentifierPatternSyntax.self)?.identifier.text
-    else {
-      fatalError("Invalid usage of @JSONProperty")
-    }
-
-    let defaultExpr = if let defaultValueExpr = argumentList.first(where: { $0.label?.text == "defaultValue" })?.expression {
-      "static let \(identifier)DefaultValue = \(defaultValueExpr)"
+    let identifier = variable.name
+    let defaultExpr = if let defaultValueExpr = attribute.argument(labeled: "defaultValue") {
+      "static let \(identifier) = \(defaultValueExpr)"
     } else {
       ""
     }
 
-    let nameExpr = if let nameExpr = argumentList.first(where: { $0.label?.text == "name" })?.expression {
-      "static let \(identifier)Nmae: String = \(nameExpr)"
+    let nameExpr = if let nameExpr = attribute.argument(labeled: "name") {
+      "static let \(identifier)Name: String = \(nameExpr)"
     } else {
       ""
     }

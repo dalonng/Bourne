@@ -12,7 +12,6 @@ import SwiftSyntaxMacros
 @main
 struct BournePlugin: CompilerPlugin {
   let providingMacros: [Macro.Type] = [
-    StringifyMacro.self,
     BourneMacro.self,
     JSONPropertyMacro.self,
   ]

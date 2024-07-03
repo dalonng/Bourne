@@ -8,12 +8,11 @@
 import SwiftSyntax
 
 public enum AccessLevelModifier: String, Comparable, CaseIterable {
-
   case `private`
   case `fileprivate`
   case `internal`
   case `public`
-  case `open`
+  case open
 
   public static func < (lhs: AccessLevelModifier, rhs: AccessLevelModifier) -> Bool {
     let lhs = Self.allCases.firstIndex(of: lhs)!
@@ -32,7 +31,7 @@ public protocol AccessLevelSyntax {
 
 extension AccessLevelSyntax {
   public var accessLevel: AccessLevelModifier {
-    modifiers.lazy.compactMap({ AccessLevelModifier(rawValue: $0.name.text) }).first ?? .internal
+    modifiers.lazy.compactMap { AccessLevelModifier(rawValue: $0.name.text) }.first ?? .internal
   }
 }
 

@@ -8,17 +8,28 @@
 import SwiftSyntax
 
 public struct Variable {
-  public var _syntax: VariableDeclSyntax
+  var _syntax: VariableDeclSyntax
 
-  init(_syntax: VariableDeclSyntax) {
+  public init(_ _syntax: VariableDeclSyntax) {
     self._syntax = _syntax
   }
 
-  init?(_ syntax: any DeclSyntaxProtocol) {
+  public init?(_ syntax: any DeclSyntaxProtocol) {
     guard let syntax = syntax.as(VariableDeclSyntax.self) else {
       return nil
     }
     _syntax = syntax
+  }
+
+  public var attributes: [Attribute] {
+    _syntax.attributes.compactMap { attribute in
+      switch attribute {
+        case .attribute(let attributeSyntax):
+          Attribute(attributeSyntax)
+        case .ifConfigDecl:
+          nil
+      }
+    }
   }
 
   var name: String {
@@ -73,6 +84,10 @@ public struct Variable {
 
     if type == "Bool" {
       return "false"
+    }
+
+    if !propertyType.isBasicType {
+      return "\(type).empty"
     }
 
     fatalError("Variable declaration must have a type")
