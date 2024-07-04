@@ -17,12 +17,27 @@ extension TypeSyntax {
       "Int", "Int8", "Int16", "Int32", "Int64",
       "UInt", "UInt8", "UInt16", "UInt32", "UInt64",
       "Float", "Double",
+      "CGFloat",
       "Bool",
       "String",
-      "Character"
+      "Character",
     ]
 
     return basicTypes.contains(simpleType.name.text)
+  }
+
+  var isNumber: Bool {
+    guard let simpleType = self.as(IdentifierTypeSyntax.self) else {
+      return false
+    }
+
+    let numbers = [
+      "Int", "Int8", "Int16", "Int32", "Int64",
+      "UInt", "UInt8", "UInt16", "UInt32", "UInt64",
+      "Float", "Double",
+      "CGFloat",
+    ]
+    return numbers.contains(simpleType.name.text)
   }
 
   var isArrayType: Bool {

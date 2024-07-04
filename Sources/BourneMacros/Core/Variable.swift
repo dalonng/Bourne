@@ -75,15 +75,11 @@ public struct Variable {
     if type == "String" {
       return "\"\""
     }
-    if type == "Int" {
+    if type == "Bool" {
+      return "false"
+    }
+    if propertyType.isNumber {
       return "0"
-    }
-    if type == "Bool" {
-      return "false"
-    }
-
-    if type == "Bool" {
-      return "false"
     }
 
     if !propertyType.isBasicType {

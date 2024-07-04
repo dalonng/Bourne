@@ -1,4 +1,5 @@
 import Bourne
+import CoreGraphics
 import SwiftParser
 import SwiftSyntax
 
@@ -10,43 +11,34 @@ struct Person: Codable {
 }
 
 @Bourne
-public struct Person2: Codable {
+public struct WholeType: Codable {
   let name: String
   let age: Int
   let isChild: Bool
   let person: Person
+  let float: Float
+  let cgFloat: CGFloat
+  let double: Double
+  let int: Int
+  let urls: [String]
 }
 
 @Bourne
-public struct UserInfo: Codable {
-  /// milliseconds
-  public let createdAt: Int
-  /// milliseconds
-  public let updatedAt: Int
-  @JSONProperty(name: "did_dfsfsd")
-  public let did: String
-  @JSONProperty(defaultValue: "BUZZ", name: "emailName")
-  public let email: String
+@frozen public struct Picture: Codable {
+  public let description: String
+  public let urls: Urls
+  public let width: Float
+//  public let height: Float
+  public let blurHash: String
+}
 
-  @JSONProperty(defaultValue: -1)
-  public let ipublicd: Int
-  public let isNew: Int
-
-  /// milliseconds
-  public let membershipExpDate: Int
-
-  /// milliseconds
-  public let membershipStartDate: Int
-  public let membershipId: Int
-  public let picture: String
-  public let roles: String
-  public let username: String
-  public let uid: String
-  public let parsedRoles: [String]
-
-  public var isFreeTrail: Bool {
-    membershipId == 0
-  }
+@Bourne
+@frozen public struct Urls: Codable, Hashable {
+  public let raw: String
+  public let full: String
+  public let regular: String
+  public let small: String
+  public let thumb: String
 }
 
 let source = """
