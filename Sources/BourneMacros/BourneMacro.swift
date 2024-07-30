@@ -23,9 +23,14 @@ public struct BourneMacro: ExtensionMacro {
     let variables = structDecl.variables.filter(\.isNoInitializer)
     let extensionDecl = try ExtensionDeclSyntax("extension \(type)") {
       generateCodingKeys(properties: variables)
+      DeclSyntax("\n")
       try generateInitializer(properties: variables, structDecl: structDecl)
+      DeclSyntax("\n")
       try generateEncoder(properties: variables, structDecl: structDecl)
+      DeclSyntax("\n")
       try generateEmpty(properties: variables, structDecl: structDecl)
+      DeclSyntax("\n")
+      try generateCopy(properties: variables, structDecl: structDecl)
     }
 
     return [extensionDecl]
@@ -89,6 +94,26 @@ public struct BourneMacro: ExtensionMacro {
      \(raw: structDecl.accessLevel.rawValue) static let empty = \(raw: structDecl.identifier)(
         \(raw: _properties)
      )
+    """)
+  }
+
+  private static func generateCopy(properties: [Variable], structDecl: Struct) throws -> DeclSyntax {
+    let paramters = properties.map { p in
+      "\(p.name): \(p.type)? = nil"
+    }.joined(separator: ",\n")
+
+    let setParamters = properties.map { p in
+      "\(p.name): \(p.name) ?? self.\(p.name)"
+    }.joined(separator: ",\n")
+
+    return DeclSyntax("""
+    \(raw: structDecl.accessLevel.rawValue) func copy(
+      \(raw: paramters)
+    ) -> \(raw: structDecl.identifier) {
+      \(raw: structDecl.identifier)(
+        \(raw: setParamters)
+      )
+    }
     """)
   }
 }

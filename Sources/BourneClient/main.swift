@@ -4,23 +4,23 @@ import SwiftParser
 import SwiftSyntax
 
 @Bourne
-struct Person: Codable {
-  let name: String
-  let age: Int
-  var isChild: Bool
+public struct Person: Codable {
+  public let name: String
+  public let age: Int
+  public var isChild: Bool
 }
 
 @Bourne
 public struct WholeType: Codable {
-  let name: String
-  let age: Int
-  let isChild: Bool
-  let person: Person
-  let float: Float
-  let cgFloat: CGFloat
-  let double: Double
-  let int: Int
-  let urls: [String]
+  public let name: String
+  public let age: Int
+  public let isChild: Bool
+  public let person: Person
+  public let float: Float
+  public let cgFloat: CGFloat
+  public let double: Double
+  public let int: Int
+  public let urls: [String]
 }
 
 @Bourne
