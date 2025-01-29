@@ -1,13 +1,17 @@
 import Bourne
 import CoreGraphics
 import Foundation
+import MacroToolkit
 import SwiftParser
 import SwiftSyntax
 
 @Bourne
 public struct Person {
   public let name: String
+
+  @JSONProperty(defaultValue: 1, name: "Age")
   public let age: Int
+  @JSONProperty(defaultValue: false, name: "is_child")
   public var isChild: Bool
 
   @JSONProperty(defaultValue: Gender.male)
@@ -81,6 +85,17 @@ func main() {
 //  let syntaxTree = Parser.parse(source: source)
 //  let analyzer = VariableAnalyzer(viewMode: .all)
 //  analyzer.walk(syntaxTree)
+
+//  @JSONProperty(defaultValue: PersonType.child, name: "person_ype")
+//  public let personType: PersonType
+}
+
+extension Person {
+  public enum PersonType {
+    case child
+    case boy
+    case girl
+  }
 }
 
 main()

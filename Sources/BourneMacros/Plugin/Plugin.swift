@@ -1,5 +1,5 @@
 //
-//  BournePlugin.swift
+//  Plugin.swift
 //
 //
 //  Created by 大桥 on 2024/5/14.
@@ -10,7 +10,7 @@ import SwiftCompilerPlugin
 import SwiftSyntaxMacros
 
 @main
-struct BournePlugin: CompilerPlugin {
+struct Plugin: CompilerPlugin {
   let providingMacros: [Macro.Type] = [
     BourneMacro.self,
     JSONPropertyMacro.self,
