@@ -8,6 +8,10 @@
 import SwiftSyntax
 
 extension TypeSyntax {
+  var isObject: Bool {
+    isBasicType == false
+  }
+
   var isBasicType: Bool {
     guard let simpleType = self.as(IdentifierTypeSyntax.self) else {
       return false
@@ -26,7 +30,7 @@ extension TypeSyntax {
     return basicTypes.contains(simpleType.name.text)
   }
 
-  var isNumber: Bool {
+  var isInteger: Bool {
     guard let simpleType = self.as(IdentifierTypeSyntax.self) else {
       return false
     }
@@ -34,10 +38,20 @@ extension TypeSyntax {
     let numbers = [
       "Int", "Int8", "Int16", "Int32", "Int64",
       "UInt", "UInt8", "UInt16", "UInt32", "UInt64",
-      "Float", "Double",
-      "CGFloat",
     ]
     return numbers.contains(simpleType.name.text)
+  }
+
+  var isFloat: Bool {
+    guard let simpleType = self.as(IdentifierTypeSyntax.self) else {
+      return false
+    }
+
+    return ["Float", "Double", "CGFloat"].contains(simpleType.name.text)
+  }
+
+  var isNumber: Bool {
+    isInteger || isFloat
   }
 
   var isArrayType: Bool {
