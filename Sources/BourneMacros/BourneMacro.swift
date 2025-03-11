@@ -24,16 +24,22 @@ public struct BourneMacro: ExtensionMacro {
     let extensionDecl = try ExtensionDeclSyntax("extension \(type)") {
       generateCodingKeys(properties: variables)
       DeclSyntax("\n")
-      try generateInitializer(properties: variables, structDecl: structDecl)
-      DeclSyntax("\n")
-      try generateEncoder(properties: variables, structDecl: structDecl)
-      DeclSyntax("\n")
       try generateEmpty(properties: variables, structDecl: structDecl)
       DeclSyntax("\n")
       try generateCopy(properties: variables, structDecl: structDecl)
     }
 
-    return [extensionDecl]
+    let decodableExtension = try ExtensionDeclSyntax("extension \(type): Decodable") {
+      try generateInitializer(properties: variables, structDecl: structDecl)
+    }
+
+    let encodableExtension = try ExtensionDeclSyntax("extension \(type): Encodable") {
+      try generateEncoder(properties: variables, structDecl: structDecl)
+    }
+
+    let sendableExtension = try ExtensionDeclSyntax("extension \(type): Sendable {}")
+
+    return [extensionDecl, decodableExtension, encodableExtension, sendableExtension]
   }
 
   private static func generateCodingKeys(properties: [Variable]) -> DeclSyntax {

@@ -3,7 +3,7 @@
 
 import Foundation
 
-@attached(extension, names: arbitrary)
+@attached(extension, conformances: Decodable, Encodable, Sendable, names: arbitrary)
 public macro Bourne() = #externalMacro(module: "BourneMacros", type: "BourneMacro")
 
 @attached(peer, names: arbitrary)

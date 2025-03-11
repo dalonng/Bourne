@@ -1,17 +1,21 @@
 import Bourne
 import CoreGraphics
+import Foundation
 import SwiftParser
 import SwiftSyntax
 
 @Bourne
-public struct Person: Codable {
+public struct Person {
   public let name: String
   public let age: Int
   public var isChild: Bool
+
+  @JSONProperty(defaultValue: Gender.male)
+  public let gender: Gender
 }
 
 @Bourne
-public struct WholeType: Codable {
+public struct WholeType {
   public let name: String
   public let age: Int
   public let isChild: Bool
@@ -24,7 +28,7 @@ public struct WholeType: Codable {
 }
 
 @Bourne
-@frozen public struct Picture: Codable {
+@frozen public struct Picture {
   public let description: String
   public let urls: Urls
   public let width: Float
@@ -33,7 +37,7 @@ public struct WholeType: Codable {
 }
 
 @Bourne
-@frozen public struct Urls: Codable, Hashable {
+@frozen public struct Urls: Hashable {
   public let raw: String
   public let full: String
   public let regular: String
@@ -47,10 +51,36 @@ public struct Person2: Codable {
 }
 """
 
+public enum Gender: String, Sendable, Codable {
+  case male = "fdsfds"
+  case female
+}
+
+@Bourne
+public struct Person2 {
+  public let name: String
+
+  @JSONProperty(defaultValue: Gender.male)
+  public let gender: Gender
+}
+
 func main() {
-  let syntaxTree = Parser.parse(source: source)
-  let analyzer = VariableAnalyzer(viewMode: .all)
-  analyzer.walk(syntaxTree)
+  let person = Person2(name: "张三", gender: .male)
+  let encoder = JSONEncoder()
+  do {
+    let jsonData = try encoder.encode(person)
+    if let jsonString = String(data: jsonData, encoding: .utf8) {
+      print(jsonString)
+    }
+    let p = try JSONDecoder().decode(Person2.self, from: jsonData)
+    print("解码成功: \(p)")
+  } catch {
+    print("编码失败: \(error)")
+  }
+
+//  let syntaxTree = Parser.parse(source: source)
+//  let analyzer = VariableAnalyzer(viewMode: .all)
+//  analyzer.walk(syntaxTree)
 }
 
 main()
