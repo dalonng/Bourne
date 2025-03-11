@@ -9,8 +9,8 @@
 import Foundation
 import Testing
 
-@Test func testDecode() {
-  let person: Person = """
+@Test func testDecode() throws {
+  let person: Person = try """
   {
     "name": "张三",
     "age": 25,
@@ -25,8 +25,8 @@ import Testing
   #expect(person.gender == .male)
 }
 
-@Test func testZeroDecode() {
-  let person: Person = """
+@Test func testZeroDecode() throws {
+  let person: Person = try """
   {
   }
   """.forceDecode()

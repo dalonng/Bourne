@@ -6,8 +6,8 @@ import SwiftSyntaxMacros
 import SwiftSyntaxMacrosTestSupport
 import Testing
 
-@Test func decodePerssion() {
-  let person: Person = """
+@Test func decodePerssion() throws {
+  let person: Person = try """
   {
     "name": "张三",
     "age": 25,

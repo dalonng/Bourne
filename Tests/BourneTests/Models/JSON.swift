@@ -12,8 +12,8 @@ extension String {
     data(using: .utf8)
   }
 
-  public func forceDecode<T: Decodable>() -> T {
-    try! JSONDecoder().decode(T.self, from: jsonData)
+  public func forceDecode<T: Decodable>() throws -> T {
+    try JSONDecoder().decode(T.self, from: jsonData)
   }
 }
 
