@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import MacroToolkit
 import SwiftSyntax
 
 final class InitDecl {
@@ -33,13 +32,13 @@ final class InitDecl {
   }
 
   var parameterSyntaxs: String {
-    String.tab + structDecl.codableVariables.map { variable in
+    String.tab + structDecl.storedVariables.map { variable in
       "\(variable.name): \(variable.type)"
     }.joined(separator: ", ")
   }
 
   var paramtersAssignSyntaxs: [String] {
-    structDecl.codableVariables.map { variable in
+    structDecl.storedVariables.map { variable in
       "  self.\(variable.name) = \(variable.name)"
     }
   }

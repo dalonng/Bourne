@@ -5,7 +5,6 @@
 //  Created by d on 2025/01/28.
 //
 
-import MacroToolkit
 import SwiftSyntax
 
 extension Variable {
@@ -31,5 +30,22 @@ extension Variable {
 
   var isNoInitializer: Bool {
     !isReadOnly && _syntax.bindings.first?.initializer == nil
+  }
+
+  var isStored: Bool {
+    for binding in bindings {
+      if !binding.accessors.isEmpty {
+        return false
+      }
+
+      if _syntax.modifiers.contains(where: { mod in
+        mod.name.tokenKind == .keyword(.static) ||
+          mod.name.tokenKind == .keyword(.class)
+      }) {
+        return false
+      }
+    }
+
+    return true
   }
 }

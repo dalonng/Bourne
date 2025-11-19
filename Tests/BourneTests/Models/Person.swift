@@ -18,7 +18,14 @@ public struct Person {
   public let gender: Gender
 }
 
-public enum Gender: String, Sendable, Codable {
+@Bourne
+public enum Gender: String, Sendable {
   case male
   case female
+}
+
+@Bourne
+public enum AccessLevel {
+  case guest
+  case admin
 }

@@ -9,3 +9,7 @@ public macro Bourne() = #externalMacro(module: "BourneMacros", type: "BourneMacr
 
 @attached(peer, names: arbitrary)
 public macro JSONProperty(defaultValue: Any? = nil, name: String = "") = #externalMacro(module: "BourneMacros", type: "JSONPropertyMacro")
+
+@attached(extension, conformances: Decodable, Encodable, Sendable, names: arbitrary)
+@attached(member, names: arbitrary)
+public macro BourneEnum() = #externalMacro(module: "BourneMacros", type: "BourneEnumMacro")

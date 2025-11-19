@@ -5,7 +5,6 @@
 //  Created by d on 2025/01/28.
 //
 
-import MacroToolkit
 import SwiftSyntax
 
 enum CodingKeysUtil {
@@ -18,7 +17,7 @@ enum CodingKeysUtil {
   }
 
   static func generateDecoder(structDecl: Struct) -> DeclSyntax {
-    let decodingStatements = structDecl.codableVariables.map { variable in
+    let decodingStatements = structDecl.storedVariables.map { variable in
       if variable.defaultExpr.isEmpty == false {
         "self.\(variable.name) = try container.decodeIfPresent(\(variable.type).self, forKey: .\(variable.name)) ?? Self.\(variable.name)"
       } else {
@@ -41,7 +40,7 @@ enum CodingKeysUtil {
   }
 
   static func generateEncoder(structDecl: Struct) -> DeclSyntax {
-    let encodeStatements = structDecl.codableVariables.map { v in
+    let encodeStatements = structDecl.storedVariables.map { v in
       "try container.encode(\(v.name), forKey: .\(v.name))"
     }.joined(separator: "\n")
 
@@ -60,7 +59,7 @@ enum CodingKeysUtil {
   }
 
   static func generateEmpty(structDecl: Struct) -> DeclSyntax {
-    let properties = structDecl.codableVariables.map { variable in
+    let properties = structDecl.storedVariables.map { variable in
       if variable.defaultExpr.isEmpty == false {
         "\(variable.name): Self.\(variable.name)"
       } else {
@@ -82,11 +81,11 @@ enum CodingKeysUtil {
   }
 
   static func generateCopy(structDecl: Struct) -> DeclSyntax {
-    let paramters = structDecl.codableVariables.map { variable in
+    let paramters = structDecl.storedVariables.map { variable in
       "\(variable.name): \(variable.type)? = nil"
     }.joined(separator: ",\n")
 
-    let setParamters = structDecl.codableVariables.map { variable in
+    let setParamters = structDecl.storedVariables.map { variable in
       "\(variable.name): \(variable.name) ?? self.\(variable.name)"
     }.joined(separator: ",\n")
 

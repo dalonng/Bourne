@@ -13,6 +13,7 @@ import SwiftSyntaxMacros
 struct Plugin: CompilerPlugin {
   let providingMacros: [Macro.Type] = [
     BourneMacro.self,
+    BourneEnumMacro.self,
     JSONPropertyMacro.self,
   ]
 }

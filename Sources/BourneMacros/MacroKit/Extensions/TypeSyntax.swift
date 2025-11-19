@@ -60,29 +60,10 @@ extension TypeSyntax {
     }
 
     // 检查是否是 Array<ElementType> 形式
-    if let identifierType = self.as(IdentifierTypeSyntax.self),
-       identifierType.genericArgumentClause != nil,
-       identifierType.name.text == "Array"
-    {
+    if let identifierType = self.as(IdentifierTypeSyntax.self), identifierType.genericArgumentClause != nil, identifierType.name.text == "Array" {
       return true
     }
 
     return false
-  }
-
-  var arrayElementType: TypeSyntax? {
-    if let arrayType = self.as(ArrayTypeSyntax.self) {
-      return arrayType.element
-    }
-
-    if let identifierType = self.as(IdentifierTypeSyntax.self),
-       let genericArguments = identifierType.genericArgumentClause?.arguments,
-       identifierType.name.text == "Array",
-       genericArguments.count == 1
-    {
-      return genericArguments.first?.argument
-    }
-
-    return nil
   }
 }

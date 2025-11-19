@@ -6,44 +6,28 @@
 //
 
 import Foundation
-import MacroToolkit
 import SwiftSyntax
+import SwiftSyntaxBuilder
 import SwiftSyntaxMacros
 
-// public struct BourneMacro: ExtensionMacro {
-//  public static func expansion(
-//    of node: SwiftSyntax.AttributeSyntax, attachedTo declaration: some SwiftSyntax.DeclGroupSyntax, providingExtensionsOf type: some SwiftSyntax.TypeSyntaxProtocol,
-//    conformingTo protocols: [SwiftSyntax.TypeSyntax], in context: some SwiftSyntaxMacros.MacroExpansionContext
-//  ) throws -> [SwiftSyntax.ExtensionDeclSyntax] {
-//    let declGroup = DeclGroup(declaration)
-//
-//    guard case .struct(let structDecl) = declGroup else {
-//      throw MacroError.notAStruct(declaration)
-//    }
-//
-//    let variables = structDecl.codableVariables
-//    let extensionDecl = try ExtensionDeclSyntax("extension \(type)") {
-//      CodingKeysUtil.generateCodingKeys(variables: variables)
-//      CodingKeysUtil.generateDecoder(structDecl: structDecl)
-//      CodingKeysUtil.generateEncoder(structDecl: structDecl)
-//      CodingKeysUtil.generateEmpty(structDecl: structDecl)
-//      CodingKeysUtil.generateCopy(structDecl: structDecl)
-//    }
-//
-//    return [extensionDecl]
-//  }
-// }
+public struct BourneMacro: MemberMacro, ExtensionMacro {
+  // MARK: - MemberMacro
 
-public struct BourneMacro: MemberMacro {
   public static func expansion(
-    of node: AttributeSyntax,
+    of _: AttributeSyntax,
     providingMembersOf declaration: some DeclGroupSyntax,
-    in context: some MacroExpansionContext
+    conformingTo protocols: [TypeSyntax],
+    in _: some MacroExpansionContext,
   ) throws -> [DeclSyntax] {
     let declGroup = DeclGroup(declaration)
 
+    #if DEBUG
+    print("Expanding @Bourne(member) for declaration: \(declaration)")
+    print("Missing conformances (member side): \(protocols)")
+    #endif
+
     guard case .struct(let structDecl) = declGroup else {
-      throw MacroError.notAStruct(declaration)
+      throw MacroError("@Bourne can only be applied to structs")
     }
 
     return [
@@ -54,5 +38,34 @@ public struct BourneMacro: MemberMacro {
       CodingKeysUtil.generateEmpty(structDecl: structDecl),
       CodingKeysUtil.generateCopy(structDecl: structDecl),
     ]
+  }
+
+  // MARK: - ExtensionMacro
+
+  public static func expansion(
+    of _: AttributeSyntax,
+    attachedTo _: some DeclGroupSyntax,
+    providingExtensionsOf type: some TypeSyntaxProtocol,
+    conformingTo protocols: [TypeSyntax],
+    in _: some MacroExpansionContext,
+  ) throws -> [ExtensionDeclSyntax] {
+    guard !protocols.isEmpty else {
+      return []
+    }
+
+    #if DEBUG
+    print("Expanding @Bourne(extension) for type: \(type)")
+    print("Protocols to add on extension: \(protocols)")
+    #endif
+
+    let protoList = protocols
+      .map(\.trimmed.description)
+      .joined(separator: ", ")
+
+    let ext = try ExtensionDeclSyntax(
+      "extension \(type.trimmed): \(raw: protoList) {}",
+    )
+
+    return [ext]
   }
 }

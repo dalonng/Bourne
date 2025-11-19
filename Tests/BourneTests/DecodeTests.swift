@@ -36,3 +36,11 @@ import Testing
   #expect(person.isChild == false)
   #expect(person.gender == .male)
 }
+
+@Test func testEnumDecodeWithoutRawType() throws {
+  let value: AccessLevel = try """
+  "admin"
+  """.forceDecode()
+
+  #expect(value == .admin)
+}
