@@ -19,6 +19,10 @@ extension String {
 
 extension Decodable {
   public static func forceDecode<T: Decodable>(data: Data) -> T {
-    try! JSONDecoder().decode(T.self, from: data)
+    do {
+      return try JSONDecoder().decode(T.self, from: data)
+    } catch {
+      fatalError("Failed to decode: \(error)")
+    }
   }
 }

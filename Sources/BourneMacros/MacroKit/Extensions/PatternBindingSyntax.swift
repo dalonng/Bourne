@@ -24,10 +24,10 @@ extension PatternBindingSyntax {
       for accessor in list {
         switch accessor.accessorSpecifier.tokenKind {
         case .keyword(.get),
-             .keyword(.set):
+          .keyword(.set):
           hasGetOrSet = true
         case .keyword(.didSet),
-             .keyword(.willSet):
+          .keyword(.willSet):
           hasObserver = true
         default:
           break

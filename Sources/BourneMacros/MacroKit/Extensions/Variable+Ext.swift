@@ -39,8 +39,7 @@ extension Variable {
       }
 
       if _syntax.modifiers.contains(where: { mod in
-        mod.name.tokenKind == .keyword(.static) ||
-          mod.name.tokenKind == .keyword(.class)
+        mod.name.tokenKind == .keyword(.static) || mod.name.tokenKind == .keyword(.class)
       }) {
         return false
       }

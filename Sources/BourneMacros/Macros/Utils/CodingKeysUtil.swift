@@ -9,11 +9,12 @@ import SwiftSyntax
 
 enum CodingKeysUtil {
   static func generateCodingKeys(variables: [Variable]) -> DeclSyntax {
-    DeclSyntax("""
-    enum CodingKeys: String, CodingKey {
-        \(raw: variables.map(\.coldingKeyExpr).joined(separator: "\n"))
-    }
-    """)
+    DeclSyntax(
+      """
+      enum CodingKeys: String, CodingKey {
+          \(raw: variables.map(\.coldingKeyExpr).joined(separator: "\n"))
+      }
+      """)
   }
 
   static func generateDecoder(structDecl: Struct) -> DeclSyntax {
@@ -25,18 +26,20 @@ enum CodingKeysUtil {
       }
     }.joined(separator: "\n")
 
-    let funcExpr = if let accessLevel = structDecl.accessLevel?.name {
-      "\(accessLevel) init(from decoder: any Decoder) throws {"
-    } else {
-      "init(from decoder: any Decoder) throws {"
-    }
+    let funcExpr =
+      if let accessLevel = structDecl.accessLevel?.name {
+        "\(accessLevel) init(from decoder: any Decoder) throws {"
+      } else {
+        "init(from decoder: any Decoder) throws {"
+      }
 
-    return DeclSyntax("""
-    \(raw: funcExpr)
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        \(raw: decodingStatements)
-    }
-    """)
+    return DeclSyntax(
+      """
+      \(raw: funcExpr)
+          let container = try decoder.container(keyedBy: CodingKeys.self)
+          \(raw: decodingStatements)
+      }
+      """)
   }
 
   static func generateEncoder(structDecl: Struct) -> DeclSyntax {
@@ -44,18 +47,20 @@ enum CodingKeysUtil {
       "try container.encode(\(v.name), forKey: .\(v.name))"
     }.joined(separator: "\n")
 
-    let funcExpr = if let accessLevel = structDecl.accessLevel?.name {
-      "\(accessLevel) func encode(to encoder: any Encoder) throws {"
-    } else {
-      "func encode(to encoder: any Encoder) throws {"
-    }
+    let funcExpr =
+      if let accessLevel = structDecl.accessLevel?.name {
+        "\(accessLevel) func encode(to encoder: any Encoder) throws {"
+      } else {
+        "func encode(to encoder: any Encoder) throws {"
+      }
 
-    return DeclSyntax("""
-    \(raw: funcExpr)
-      var container = encoder.container(keyedBy: CodingKeys.self)
-      \(raw: encodeStatements)
-    }
-    """)
+    return DeclSyntax(
+      """
+      \(raw: funcExpr)
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        \(raw: encodeStatements)
+      }
+      """)
   }
 
   static func generateEmpty(structDecl: Struct) -> DeclSyntax {
@@ -67,17 +72,19 @@ enum CodingKeysUtil {
       }
     }.joined(separator: ",\n")
 
-    let emptyExpr = if let accessLevel = structDecl.accessLevel?.name {
-      "\(accessLevel) static let empty = \(structDecl.identifier)("
-    } else {
-      "static let empty = \(structDecl.identifier)("
-    }
+    let emptyExpr =
+      if let accessLevel = structDecl.accessLevel?.name {
+        "\(accessLevel) static let empty = \(structDecl.identifier)("
+      } else {
+        "static let empty = \(structDecl.identifier)("
+      }
 
-    return DeclSyntax("""
-      \(raw: emptyExpr)
-      \(raw: properties)
-    )
-    """)
+    return DeclSyntax(
+      """
+        \(raw: emptyExpr)
+        \(raw: properties)
+      )
+      """)
   }
 
   static func generateCopy(structDecl: Struct) -> DeclSyntax {
@@ -89,20 +96,22 @@ enum CodingKeysUtil {
       "\(variable.name): \(variable.name) ?? self.\(variable.name)"
     }.joined(separator: ",\n")
 
-    let copyFuncExpr = if let accessLevel = structDecl.accessLevel?.name {
-      "\(accessLevel) func copy("
-    } else {
-      "func copy("
-    }
+    let copyFuncExpr =
+      if let accessLevel = structDecl.accessLevel?.name {
+        "\(accessLevel) func copy("
+      } else {
+        "func copy("
+      }
 
-    return DeclSyntax("""
-    \(raw: copyFuncExpr)
-      \(raw: paramters)
-    ) -> \(raw: structDecl.identifier) {
-      \(raw: structDecl.identifier)(
-        \(raw: setParamters)
-      )
-    }
-    """)
+    return DeclSyntax(
+      """
+      \(raw: copyFuncExpr)
+        \(raw: paramters)
+      ) -> \(raw: structDecl.identifier) {
+        \(raw: structDecl.identifier)(
+          \(raw: setParamters)
+        )
+      }
+      """)
   }
 }

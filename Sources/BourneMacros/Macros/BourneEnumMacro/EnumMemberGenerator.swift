@@ -55,34 +55,37 @@ struct EnumMemberGenerator {
   }
 
   private func generateRawValueDecoder(rawType: String) -> DeclSyntax {
-    DeclSyntax("""
-    \(raw: accessPrefix)init(from decoder: any Decoder) throws {
-        let container = try decoder.singleValueContainer()
-        let rawValue = try container.decode(\(raw: rawType).self)
-        guard let value = Self(rawValue: rawValue) else {
-            throw DecodingError.dataCorruptedError(
-                in: container,
-                debugDescription: "Invalid \(raw: enumDecl.identifier) value: \\(rawValue)"
-            )
-        }
-        self = value
-    }
-    """)
+    DeclSyntax(
+      """
+      \(raw: accessPrefix)init(from decoder: any Decoder) throws {
+          let container = try decoder.singleValueContainer()
+          let rawValue = try container.decode(\(raw: rawType).self)
+          guard let value = Self(rawValue: rawValue) else {
+              throw DecodingError.dataCorruptedError(
+                  in: container,
+                  debugDescription: "Invalid \(raw: enumDecl.identifier) value: \\(rawValue)"
+              )
+          }
+          self = value
+      }
+      """)
   }
 
   private func generateRawValueEncoder() -> DeclSyntax {
-    DeclSyntax("""
-    \(raw: accessPrefix)func encode(to encoder: any Encoder) throws {
-      var container = encoder.singleValueContainer()
-      try container.encode(self.rawValue)
-    }
-    """)
+    DeclSyntax(
+      """
+      \(raw: accessPrefix)func encode(to encoder: any Encoder) throws {
+        var container = encoder.singleValueContainer()
+        try container.encode(self.rawValue)
+      }
+      """)
   }
 
   private func generateEmpty(firstCase: String) -> DeclSyntax {
-    DeclSyntax("""
-    \(raw: accessPrefix)static let empty = \(raw: enumDecl.identifier).\(raw: firstCase)
-    """)
+    DeclSyntax(
+      """
+      \(raw: accessPrefix)static let empty = \(raw: enumDecl.identifier).\(raw: firstCase)
+      """)
   }
 
   private func parseCaseInfos() throws -> [EnumCaseInfo] {
@@ -104,43 +107,47 @@ struct EnumMemberGenerator {
   }
 
   private func generateStringDecoder(caseInfos: [EnumCaseInfo]) -> DeclSyntax {
-    let cases = caseInfos
+    let cases =
+      caseInfos
       .map { info in
         "case \(info.literal): self = .\(info.name)"
       }
       .joined(separator: "\n        ")
 
-    return DeclSyntax("""
-    \(raw: accessPrefix)init(from decoder: any Decoder) throws {
-        let container = try decoder.singleValueContainer()
-        let rawValue = try container.decode(String.self)
-        switch rawValue {
-        \(raw: cases)
-        default:
-            throw DecodingError.dataCorruptedError(
-                in: container,
-                debugDescription: "Invalid \(raw: enumDecl.identifier) value: \\(rawValue)"
-            )
-        }
-    }
-    """)
+    return DeclSyntax(
+      """
+      \(raw: accessPrefix)init(from decoder: any Decoder) throws {
+          let container = try decoder.singleValueContainer()
+          let rawValue = try container.decode(String.self)
+          switch rawValue {
+          \(raw: cases)
+          default:
+              throw DecodingError.dataCorruptedError(
+                  in: container,
+                  debugDescription: "Invalid \(raw: enumDecl.identifier) value: \\(rawValue)"
+              )
+          }
+      }
+      """)
   }
 
   private func generateStringEncoder(caseInfos: [EnumCaseInfo]) -> DeclSyntax {
-    let cases = caseInfos
+    let cases =
+      caseInfos
       .map { info in
         "case .\(info.name): try container.encode(\(info.literal))"
       }
       .joined(separator: "\n      ")
 
-    return DeclSyntax("""
-    \(raw: accessPrefix)func encode(to encoder: any Encoder) throws {
-      var container = encoder.singleValueContainer()
-      switch self {
-      \(raw: cases)
+    return DeclSyntax(
+      """
+      \(raw: accessPrefix)func encode(to encoder: any Encoder) throws {
+        var container = encoder.singleValueContainer()
+        switch self {
+        \(raw: cases)
+        }
       }
-    }
-    """)
+      """)
   }
 }
 

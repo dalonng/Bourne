@@ -2,18 +2,26 @@ included:
   - Sources
   - Tests
 excluded:
-  - .build
+  - .build/
 
 line_length: 200
 
-disabled_rules:
-  - trailing_comma
+trailing_comma:
+  mandatory_comma: true
 
 identifier_name:
-  min_length: 3
-  max_length: 40
-  excluded: 
+  allowed_symbols:
+    - "_"
+  excluded:
     - a
     - b
     - id
     - v
+    - i
+    - c
+  min_length: 3
+  max_length: 40
+
+large_tuple:
+  warning: 7
+  error: 8

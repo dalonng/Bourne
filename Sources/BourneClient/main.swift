@@ -67,10 +67,10 @@ public struct WholeType {
 }
 
 let source = """
-public struct Person2: Codable {
-  let person: Person
-}
-"""
+  public struct Person2: Codable {
+    let person: Person
+  }
+  """
 
 public enum Gender: String, Sendable, Codable {
   case male = "fdsfds"

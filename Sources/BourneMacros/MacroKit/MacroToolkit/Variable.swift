@@ -21,7 +21,6 @@ public struct Variable {
   /// The bindings within the variable declaration. A single variable declaration can
   /// define multiple bindings (e.g. `var a: Int, b: Int`).
   public var bindings: [VariableBinding] {
-    // TODO: Should bindings like `let (a, b) = (1, 2)` be split into `a = 1` and `b = 2`?
     _syntax.bindings.map(VariableBinding.init)
   }
 
@@ -35,12 +34,12 @@ public struct Variable {
   public var attributes: [AttributeListElement] {
     _syntax.attributes.map { attribute in
       switch attribute {
-        case .attribute(let attributeSyntax):
-          .attribute(Attribute(attributeSyntax))
-        case .ifConfigDecl(let ifConfigDeclSyntax):
-          .conditionalCompilationBlock(
-            ConditionalCompilationBlock(ifConfigDeclSyntax),
-          )
+      case .attribute(let attributeSyntax):
+        .attribute(Attribute(attributeSyntax))
+      case .ifConfigDecl(let ifConfigDeclSyntax):
+        .conditionalCompilationBlock(
+          ConditionalCompilationBlock(ifConfigDeclSyntax),
+        )
       }
     }
   }
@@ -69,11 +68,10 @@ public struct Variable {
 
     for accessor in binding.accessors {
       switch accessor.accessorSpecifier.tokenKind {
-        case .keyword(.didSet),
-             .keyword(.willSet):
-          break
-        default:
-          return false
+      case .keyword(.didSet), .keyword(.willSet):
+        break
+      default:
+        return false
       }
     }
     return true

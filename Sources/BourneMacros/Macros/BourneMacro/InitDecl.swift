@@ -32,9 +32,10 @@ final class InitDecl {
   }
 
   var parameterSyntaxs: String {
-    String.tab + structDecl.storedVariables.map { variable in
-      "\(variable.name): \(variable.type)"
-    }.joined(separator: ", ")
+    String.tab
+      + structDecl.storedVariables.map { variable in
+        "\(variable.name): \(variable.type)"
+      }.joined(separator: ", ")
   }
 
   var paramtersAssignSyntaxs: [String] {

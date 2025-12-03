@@ -19,10 +19,10 @@ extension SyntaxProtocol {
   /// Gets the syntax indented using the specified `indentation`.
   public func indented(_ indentation: Indentation = .spaces(4)) -> Self {
     switch indentation {
-      case .spaces(let spaces):
-        with(\.leadingTrivia, leadingTrivia + [.spaces(spaces)])
-      case .tab:
-        with(\.leadingTrivia, leadingTrivia + [.tabs(1)])
+    case .spaces(let spaces):
+      with(\.leadingTrivia, leadingTrivia + [.spaces(spaces)])
+    case .tab:
+      with(\.leadingTrivia, leadingTrivia + [.tabs(1)])
     }
   }
 }
@@ -43,20 +43,20 @@ extension DeclGroupSyntax {
   public func textualDeclKind(withArticle article: Bool = false) -> String {
     // Modified from: https://github.com/DougGregor/swift-macro-examples/blob/f61ac7cdca8dc3557e53f86e7e03df1353908d3e/MacroExamplesPlugin/MetaEnumMacro.swift#L121
     switch self {
-      case is ActorDeclSyntax:
-        article ? "an actor" : "actor"
-      case is ClassDeclSyntax:
-        article ? "a class" : "class"
-      case is ExtensionDeclSyntax:
-        article ? "an extension" : "extension"
-      case is ProtocolDeclSyntax:
-        article ? "a protocol" : "protocol"
-      case is StructDeclSyntax:
-        article ? "a struct" : "struct"
-      case is EnumDeclSyntax:
-        article ? "an enum" : "enum"
-      default:
-        "unknown"
+    case is ActorDeclSyntax:
+      article ? "an actor" : "actor"
+    case is ClassDeclSyntax:
+      article ? "a class" : "class"
+    case is ExtensionDeclSyntax:
+      article ? "an extension" : "extension"
+    case is ProtocolDeclSyntax:
+      article ? "a protocol" : "protocol"
+    case is StructDeclSyntax:
+      article ? "a struct" : "struct"
+    case is EnumDeclSyntax:
+      article ? "an enum" : "enum"
+    default:
+      "unknown"
     }
   }
 }

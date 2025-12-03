@@ -49,7 +49,8 @@ public struct BourneEnumMacro: MemberMacro, ExtensionMacro {
     print("Protocols to add on extension: \(protocols)")
     #endif
 
-    let protoList = protocols
+    let protoList =
+      protocols
       .map(\.trimmed.description)
       .joined(separator: ", ")
 
