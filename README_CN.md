@@ -29,7 +29,7 @@ Bourne 使用 Swift 宏自动生成带有合理默认值的 `Codable` 实现。�
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/user/Bourne.git", from: "1.0.0")
+    .package(url: "https://github.com/dalonng/Bourne.git", from: "0.4.0")
 ]
 ```
 

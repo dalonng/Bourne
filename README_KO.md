@@ -29,7 +29,7 @@ Bourne은 Swift 매크로를 사용하여 합리적인 기본값을 가진 `Coda
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/user/Bourne.git", from: "1.0.0")
+    .package(url: "https://github.com/dalonng/Bourne.git", from: "0.4.0")
 ]
 ```
 
