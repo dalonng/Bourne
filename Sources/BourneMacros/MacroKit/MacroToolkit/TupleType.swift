@@ -11,7 +11,6 @@ public struct TupleType: TypeProtocol {
   }
 
   var elements: [Type] {
-    // TODO: Handle labels and the possible ellipsis
     _baseSyntax.elements.map { element in
       Type(element.type)
     }

@@ -51,8 +51,8 @@ public struct BourneEnumMacro: MemberMacro, ExtensionMacro {
 
     let protoList =
       protocols
-      .map(\.trimmed.description)
-      .joined(separator: ", ")
+        .map(\.trimmed.description)
+        .joined(separator: ", ")
 
     let ext = try ExtensionDeclSyntax(
       "extension \(type.trimmed): \(raw: protoList) {}",

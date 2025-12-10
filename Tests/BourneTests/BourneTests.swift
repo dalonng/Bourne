@@ -1,10 +1,11 @@
-@testable import BourneMacros
 import Foundation
 import SwiftSyntax
 import SwiftSyntaxBuilder
 import SwiftSyntaxMacros
 import SwiftSyntaxMacrosTestSupport
 import Testing
+
+@testable import BourneMacros
 
 @Test func decodePerssion() throws {
   let person: Person = try """

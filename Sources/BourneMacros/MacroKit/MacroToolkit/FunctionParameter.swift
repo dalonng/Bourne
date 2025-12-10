@@ -10,7 +10,6 @@ public struct FunctionParameter {
 
   /// - Parameter label: The in-source label to be declared. Use `"_"` to have no ``FunctionParameter/callSiteLabel``.
   public init(label: String? = nil, name: String, type: Type) {
-    // TODO: Make the distinction between label and callSiteLabel more clear and well documented
     _syntax = FunctionParameterSyntax(
       firstName: TokenSyntax.identifier(label ?? name),
       secondName: label == nil ? nil : TokenSyntax.identifier(name),
@@ -71,7 +70,6 @@ extension Sequence where Element == FunctionParameter {
   /// Converts the parameters into an argument list as would be used to passthrough the parameters to
   /// another function with the same parameters (common when wrapping a function).
   public var asPassthroughArguments: [String] {
-    // TODO: Make output strongly typed syntax instead of strings
     map { parameter in
       if let label = parameter.callSiteLabel {
         return "\(label): \(parameter.name)"

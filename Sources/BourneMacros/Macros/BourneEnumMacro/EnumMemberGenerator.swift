@@ -21,14 +21,14 @@ struct EnumMemberGenerator {
       members = [
         generateRawValueDecoder(rawType: rawTypeName),
         generateRawValueEncoder(),
-        generateEmpty(firstCase: firstCase.identifier),
+        generateDefaultValue(firstCase: firstCase.identifier),
       ]
     } else {
       let caseInfos = try parseCaseInfos()
       members = [
         generateStringDecoder(caseInfos: caseInfos),
         generateStringEncoder(caseInfos: caseInfos),
-        generateEmpty(firstCase: firstCase.identifier),
+        generateDefaultValue(firstCase: firstCase.identifier),
       ]
     }
 
@@ -81,10 +81,10 @@ struct EnumMemberGenerator {
       """)
   }
 
-  private func generateEmpty(firstCase: String) -> DeclSyntax {
+  private func generateDefaultValue(firstCase: String) -> DeclSyntax {
     DeclSyntax(
       """
-      \(raw: accessPrefix)static let empty = \(raw: enumDecl.identifier).\(raw: firstCase)
+      \(raw: accessPrefix)static let defaultValue = \(raw: enumDecl.identifier).\(raw: firstCase)
       """)
   }
 

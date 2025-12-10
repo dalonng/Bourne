@@ -25,7 +25,7 @@ public struct JSONPropertyMacro: PeerMacro {
       \(raw: variable.defaultExpr)
       \(raw: variable.nameExpr)
 
-      """
+      """,
     ]
   }
 }

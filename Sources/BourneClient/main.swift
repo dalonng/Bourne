@@ -32,7 +32,7 @@ public enum TestEnum: Int {
 public enum TestEnum2: String, Sendable {
   case red
   case green
-  case blue
+  case blue = "blue_color"
 }
 
 @Bourne
@@ -67,10 +67,10 @@ public struct WholeType {
 }
 
 let source = """
-  public struct Person2: Codable {
-    let person: Person
-  }
-  """
+public struct Person2: Codable {
+  let person: Person
+}
+"""
 
 public enum Gender: String, Sendable, Codable {
   case male = "fdsfds"

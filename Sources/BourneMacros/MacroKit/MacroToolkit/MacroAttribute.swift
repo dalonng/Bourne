@@ -1,6 +1,5 @@
 import SwiftSyntax
 
-// TODO: Combine with ``Attribute``
 /// Wraps an attribute in an API more suited to working with macro attributes specifically.
 public struct MacroAttribute {
   /// The underlying syntax node.
@@ -26,9 +25,8 @@ public struct MacroAttribute {
     }?.expression).map(Expr.init)
   }
 
-  // TODO: Add way to conditionally get arguments without labels if no labels are present.
-  //   This is required because most of the time when matching against the list of arguments, macro authors will want to ensure there
-  //   are no random extraenous labels.
+  ///   This is required because most of the time when matching against the list of arguments, macro authors will want to ensure there
+  ///   are no random extraenous labels.
   /// Gets the list of all of the attribute's arguments.
   public var arguments: [(label: String?, expr: Expr)] {
     guard let argumentList = _argumentListSyntax else {

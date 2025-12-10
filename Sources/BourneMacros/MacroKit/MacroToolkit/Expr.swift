@@ -1,9 +1,7 @@
 import SwiftSyntax
 
-// TODO: Introduce a generic `NumericLiteral` type for both integer and floating point
 //   literals, often macro devs might forget to check for integer literals if they just
 //   want a floating point number.
-// TODO: Create wrapper for tuple syntax
 /// Wraps an expression syntax node.
 public struct Expr {
   /// The underlying syntax node.

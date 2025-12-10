@@ -118,7 +118,7 @@ public struct DiagnosticBuilder {
           FixIt.Change.replace(
             oldNode: Syntax(old),
             newNode: Syntax(new)
-          )
+          ),
         ]
       )
     )

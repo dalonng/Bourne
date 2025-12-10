@@ -2,7 +2,7 @@ import SwiftSyntax
 
 /// Wraps a function type (e.g. `(Int, Double) -> Bool`).
 public struct FunctionType: TypeProtocol {
-  // TODO: Should give access to attributes such as `@escaping`.
+
   public var _baseSyntax: FunctionTypeSyntax
   public var _attributedSyntax: AttributedTypeSyntax?
 

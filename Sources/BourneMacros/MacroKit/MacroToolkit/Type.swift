@@ -88,43 +88,48 @@ public enum `Type`: TypeProtocol, SyntaxExpressibleByStringInterpolation {
     self.init(syntax, attributedSyntax: nil)
   }
 
-  public init(_ syntax: TypeSyntax, attributedSyntax: AttributedTypeSyntax? = nil) {
-    let syntax: TypeSyntaxProtocol = attributedSyntax ?? syntax
+  // swiftlint:disable:next cyclomatic_complexity
+  private static func resolveType(from syntax: TypeSyntaxProtocol) -> Type {
     if let type = ArrayType(syntax) {
-      self = .array(type)
+      return .array(type)
     } else if let type = ClassRestrictionType(syntax) {
-      self = .classRestriction(type)
+      return .classRestriction(type)
     } else if let type = CompositionType(syntax) {
-      self = .composition(type)
+      return .composition(type)
     } else if let type = SomeOrAnyType(syntax) {
-      self = .someOrAny(type)
+      return .someOrAny(type)
     } else if let type = DictionaryType(syntax) {
-      self = .dictionary(type)
+      return .dictionary(type)
     } else if let type = FunctionType(syntax) {
-      self = .function(type)
+      return .function(type)
     } else if let type = ImplicitlyUnwrappedOptionalType(syntax) {
-      self = .implicitlyUnwrappedOptional(type)
+      return .implicitlyUnwrappedOptional(type)
     } else if let type = MemberType(syntax) {
-      self = .member(type)
+      return .member(type)
     } else if let type = MetatypeType(syntax) {
-      self = .metatype(type)
+      return .metatype(type)
     } else if let type = MissingType(syntax) {
-      self = .missing(type)
+      return .missing(type)
     } else if let type = OptionalType(syntax) {
-      self = .optional(type)
+      return .optional(type)
     } else if let type = PackExpansionType(syntax) {
-      self = .packExpansion(type)
+      return .packExpansion(type)
     } else if let type = PackReferenceType(syntax) {
-      self = .packReference(type)
+      return .packReference(type)
     } else if let type = SimpleType(syntax) {
-      self = .simple(type)
+      return .simple(type)
     } else if let type = SuppressedType(syntax) {
-      self = .suppressed(type)
+      return .suppressed(type)
     } else if let type = TupleType(syntax) {
-      self = .tuple(type)
+      return .tuple(type)
     } else {
       fatalError("TODO: Implement wrappers for all types of type syntax")
     }
+  }
+
+  public init(_ syntax: TypeSyntax, attributedSyntax: AttributedTypeSyntax? = nil) {
+    let syntax: TypeSyntaxProtocol = attributedSyntax ?? syntax
+    self = Self.resolveType(from: syntax)
   }
 
   /// Allows string interpolation syntax to be used to express type syntax.
@@ -151,7 +156,6 @@ public enum `Type`: TypeProtocol, SyntaxExpressibleByStringInterpolation {
     normalizedDescription == "Void"
   }
 
-  // TODO: Generate type conversions with macro?
   /// Attempts to get the type as a simple type.
   public var asSimpleType: SimpleType? {
     switch self {
@@ -167,8 +171,6 @@ public enum `Type`: TypeProtocol, SyntaxExpressibleByStringInterpolation {
     default: nil
     }
   }
-
-  // TODO: Implement rest of conversions
 }
 
 extension Type? {

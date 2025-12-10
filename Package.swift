@@ -26,6 +26,16 @@ let package = Package(
     ),
     .target(name: "Bourne", dependencies: ["BourneMacros"]),
     .executableTarget(name: "BourneClient", dependencies: ["Bourne"]),
-    .testTarget(name: "BourneTests", dependencies: ["BourneMacros"]),
+    .testTarget(
+      name: "BourneTests",
+      dependencies: [
+        "Bourne",
+        "BourneMacros",
+        .product(name: "SwiftSyntax", package: "swift-syntax"),
+        .product(name: "SwiftSyntaxBuilder", package: "swift-syntax"),
+        .product(name: "SwiftSyntaxMacros", package: "swift-syntax"),
+        .product(name: "SwiftSyntaxMacrosTestSupport", package: "swift-syntax"),
+      ]
+    ),
   ],
 )

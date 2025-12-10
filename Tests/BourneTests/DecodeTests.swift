@@ -5,9 +5,10 @@
 //  Created by d on 2025/03/11.
 //
 
-@testable import BourneMacros
 import Foundation
 import Testing
+
+@testable import BourneMacros
 
 @Test func testDecode() throws {
   let person: Person = try """

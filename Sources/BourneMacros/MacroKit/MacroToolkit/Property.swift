@@ -1,10 +1,6 @@
 import SwiftSyntax
 
-// TODO: Handle all modifiers
-// TODO: Make keyword enum-typed instead of stringly-typed
-// TODO: Improve attribute API, perhaps with a way to ignore attributes in compiler
 //   directive control flow blocks.
-// TODO: Implement a way for devs to easily verify the usage of their macros, e.g. not
 //   attached to the same decl twice, only attached to static vars, etc.
 /// A property of a declaration group such as a `struct`.
 public struct Property {
@@ -108,7 +104,7 @@ public struct Property {
           type: type,
           initialValue: initialValue,
           accessors: accessors,
-        )
+        ),
       ]
     case let pattern as TuplePatternSyntax:
       let tupleInitialValue: TupleExprSyntax? =
@@ -120,8 +116,7 @@ public struct Property {
       let tupleType: TupleType? =
         if let type,
           let tuple = TupleType(type),
-          tuple.elements.count == pattern.elements.count
-        {
+          tuple.elements.count == pattern.elements.count {
           tuple
         } else {
           nil
@@ -167,11 +162,11 @@ public struct Property {
     case _ as WildcardPatternSyntax:
       return []
     default:
-      // TODO: Handle all patterns
       return []
     }
   }
 
+  // swiftlint:disable:next cyclomatic_complexity
   private static func inferArrayLiteralType(_ arrayLiteral: ArrayExprSyntax) -> Type? {
     var elementType: String?
     for element in arrayLiteral.elements {

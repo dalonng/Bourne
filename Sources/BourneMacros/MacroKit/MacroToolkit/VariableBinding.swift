@@ -27,7 +27,6 @@ public struct VariableBinding {
     case .accessors(let block):
       return Array(block)
     case .getter(let getter):
-      // TODO: Avoid synthesising syntax here (wouldn't work with diagnostics)
       return [AccessorDeclSyntax(accessorSpecifier: .keyword(.get)) { getter }]
     case .none:
       return []
