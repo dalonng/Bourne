@@ -1,31 +1,31 @@
 # Bourne
 
-A Swift macro library for automatic JSON encoding/decoding with safe defaults and immutable-first design.
+一个使用 Swift 宏实现 JSON 自动编解码的库，提供安全的默认值和不可变优先设计。
 
-## Overview
+## 概述
 
-Bourne uses Swift macros to automatically generate `Codable` implementations with sensible defaults. It's designed for immutable data models using `struct` and `let`, which helps avoid data race issues in multi-threaded environments.
+Bourne 使用 Swift 宏自动生成带有合理默认值的 `Codable` 实现。它专为使用 `struct` 和 `let` 的不可变数据模型设计，有助于避免多线程环境中的数据竞争问题。
 
-## Features
+## 特性
 
-- **Automatic Codable Implementation**: Generate `init(from:)` and `encode(to:)` methods automatically
-- **Safe Defaults**: Missing JSON keys use default values instead of throwing errors
-- **Immutable-First Design**: Designed for `struct` + `let` patterns with a `copy()` method for modifications
-- **Empty Instance**: Auto-generates a static `.empty` property for each model
-- **Enum Support**: `@BourneEnum` macro for enums with raw values
-- **Custom Property Configuration**: `@JSONProperty` for custom default values and key names
-- **Thread-Safe**: `Sendable` conformance automatically added
+- **自动 Codable 实现**：自动生成 `init(from:)` 和 `encode(to:)` 方法
+- **安全的默认值**：缺失的 JSON 键使用默认值而不是抛出错误
+- **不可变优先设计**：为 `struct` + `let` 模式设计，提供 `copy()` 方法进行修改
+- **空实例**：为每个模型自动生成静态 `.empty` 属性
+- **枚举支持**：`@BourneEnum` 宏支持带原始值的枚举
+- **自定义属性配置**：`@JSONProperty` 用于自定义默认值和键名
+- **线程安全**：自动添加 `Sendable` 协议
 
-## Requirements
+## 系统要求
 
 - Swift 6.2+
 - macOS 10.15+ / iOS 15+ / tvOS 15+ / watchOS 6+
 
-## Installation
+## 安装
 
 ### Swift Package Manager
 
-Add to your `Package.swift`:
+在 `Package.swift` 中添加：
 
 ```swift
 dependencies: [
@@ -33,7 +33,7 @@ dependencies: [
 ]
 ```
 
-Then add `Bourne` to your target dependencies:
+然后将 `Bourne` 添加到目标依赖：
 
 ```swift
 .target(
@@ -42,9 +42,9 @@ Then add `Bourne` to your target dependencies:
 )
 ```
 
-## Usage
+## 使用方法
 
-### Basic Usage with `@Bourne`
+### 使用 `@Bourne` 的基本用法
 
 ```swift
 import Bourne
@@ -57,15 +57,15 @@ public struct Person {
 }
 ```
 
-This generates:
+这会生成：
 
-- `CodingKeys` enum
-- `init(from decoder: Decoder)` with safe defaults
+- `CodingKeys` 枚举
+- 带安全默认值的 `init(from decoder: Decoder)`
 - `encode(to encoder: Encoder)`
-- `static let empty` - an empty instance with default values
-- `func copy(...)` - create a modified copy
+- `static let empty` - 带默认值的空实例
+- `func copy(...)` - 创建修改后的副本
 
-### Enum Support with `@BourneEnum`
+### 使用 `@BourneEnum` 的枚举支持
 
 ```swift
 @BourneEnum
@@ -75,7 +75,7 @@ public enum Gender: String, Sendable {
 }
 ```
 
-### Custom Property Configuration with `@JSONProperty`
+### 使用 `@JSONProperty` 自定义属性配置
 
 ```swift
 @Bourne
@@ -93,12 +93,12 @@ public struct User {
 }
 ```
 
-Parameters:
+参数：
 
-- `defaultValue`: Custom default value when JSON key is missing
-- `name`: Custom JSON key name (for snake_case to camelCase mapping)
+- `defaultValue`：JSON 键缺失时的自定义默认值
+- `name`：自定义 JSON 键名（用于 snake_case 到 camelCase 的映射）
 
-### Nested Models
+### 嵌套模型
 
 ```swift
 @Bourne
@@ -110,36 +110,36 @@ public struct Address {
 @Bourne
 public struct PersonWithAddress {
     public let name: String
-    public let address: Address  // Uses Address.empty if missing
+    public let address: Address  // 如果缺失则使用 Address.empty
 }
 ```
 
-### Using the Copy Method
+### 使用 Copy 方法
 
-Since models are immutable by default, use `copy()` to create modified instances:
+由于模型默认是不可变的，使用 `copy()` 创建修改后的实例：
 
 ```swift
 let person = Person(name: "Alice", age: 25, isChild: false)
-let updatedPerson = person.copy(age: 26)  // Only changes age
+let updatedPerson = person.copy(age: 26)  // 只修改 age
 ```
 
-## Default Values
+## 默认值
 
-When a JSON key is missing, Bourne uses these defaults:
+当 JSON 键缺失时，Bourne 使用以下默认值：
 
-| Type | Default Value |
-|------|---------------|
+| 类型 | 默认值 |
+|------|--------|
 | `String` | `""` |
 | `Int` | `0` |
 | `Bool` | `false` |
 | `Float` / `Double` / `CGFloat` | `0` |
 | `Array` | `[]` |
-| Custom `@Bourne` types | `.empty` |
-| Custom `@BourneEnum` types | First case (or custom via `@JSONProperty`) |
+| 自定义 `@Bourne` 类型 | `.empty` |
+| 自定义 `@BourneEnum` 类型 | 第一个 case（或通过 `@JSONProperty` 自定义） |
 
-## Generated Code Example
+## 生成的代码示例
 
-For this struct:
+对于此结构体：
 
 ```swift
 @Bourne
@@ -150,7 +150,7 @@ public struct Person {
 }
 ```
 
-Bourne generates:
+Bourne 生成：
 
 ```swift
 extension Person: Decodable, Encodable, Sendable {
@@ -194,12 +194,6 @@ extension Person: Decodable, Encodable, Sendable {
 }
 ```
 
-## Documentation
-
-- [中文文档](README_CN.md)
-- [日本語ドキュメント](README_JA.md)
-- [한국어 문서](README_KO.md)
-
-## License
+## 许可证
 
 MIT License

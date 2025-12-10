@@ -1,31 +1,31 @@
 # Bourne
 
-A Swift macro library for automatic JSON encoding/decoding with safe defaults and immutable-first design.
+안전한 기본값과 불변성 우선 설계를 제공하는 Swift 매크로 기반 JSON 자동 인코딩/디코딩 라이브러리입니다.
 
-## Overview
+## 개요
 
-Bourne uses Swift macros to automatically generate `Codable` implementations with sensible defaults. It's designed for immutable data models using `struct` and `let`, which helps avoid data race issues in multi-threaded environments.
+Bourne은 Swift 매크로를 사용하여 합리적인 기본값을 가진 `Codable` 구현을 자동 생성합니다. `struct`와 `let`을 사용하는 불변 데이터 모델을 위해 설계되어 멀티스레드 환경에서 데이터 경쟁 문제를 방지하는 데 도움이 됩니다.
 
-## Features
+## 기능
 
-- **Automatic Codable Implementation**: Generate `init(from:)` and `encode(to:)` methods automatically
-- **Safe Defaults**: Missing JSON keys use default values instead of throwing errors
-- **Immutable-First Design**: Designed for `struct` + `let` patterns with a `copy()` method for modifications
-- **Empty Instance**: Auto-generates a static `.empty` property for each model
-- **Enum Support**: `@BourneEnum` macro for enums with raw values
-- **Custom Property Configuration**: `@JSONProperty` for custom default values and key names
-- **Thread-Safe**: `Sendable` conformance automatically added
+- **자동 Codable 구현**: `init(from:)` 및 `encode(to:)` 메서드 자동 생성
+- **안전한 기본값**: 누락된 JSON 키는 오류를 발생시키지 않고 기본값 사용
+- **불변성 우선 설계**: `struct` + `let` 패턴을 위해 설계되었으며 수정을 위한 `copy()` 메서드 제공
+- **빈 인스턴스**: 각 모델에 정적 `.empty` 속성 자동 생성
+- **열거형 지원**: raw value를 가진 열거형을 위한 `@BourneEnum` 매크로
+- **사용자 정의 속성 설정**: 사용자 정의 기본값과 키 이름을 위한 `@JSONProperty`
+- **스레드 안전**: `Sendable` 준수 자동 추가
 
-## Requirements
+## 요구사항
 
 - Swift 6.2+
 - macOS 10.15+ / iOS 15+ / tvOS 15+ / watchOS 6+
 
-## Installation
+## 설치
 
 ### Swift Package Manager
 
-Add to your `Package.swift`:
+`Package.swift`에 추가:
 
 ```swift
 dependencies: [
@@ -33,7 +33,7 @@ dependencies: [
 ]
 ```
 
-Then add `Bourne` to your target dependencies:
+그런 다음 `Bourne`을 타겟 의존성에 추가:
 
 ```swift
 .target(
@@ -42,9 +42,9 @@ Then add `Bourne` to your target dependencies:
 )
 ```
 
-## Usage
+## 사용법
 
-### Basic Usage with `@Bourne`
+### `@Bourne` 기본 사용법
 
 ```swift
 import Bourne
@@ -57,15 +57,15 @@ public struct Person {
 }
 ```
 
-This generates:
+이것은 다음을 생성합니다:
 
-- `CodingKeys` enum
-- `init(from decoder: Decoder)` with safe defaults
+- `CodingKeys` 열거형
+- 안전한 기본값을 가진 `init(from decoder: Decoder)`
 - `encode(to encoder: Encoder)`
-- `static let empty` - an empty instance with default values
-- `func copy(...)` - create a modified copy
+- `static let empty` - 기본값을 가진 빈 인스턴스
+- `func copy(...)` - 수정된 복사본 생성
 
-### Enum Support with `@BourneEnum`
+### `@BourneEnum`을 사용한 열거형 지원
 
 ```swift
 @BourneEnum
@@ -75,7 +75,7 @@ public enum Gender: String, Sendable {
 }
 ```
 
-### Custom Property Configuration with `@JSONProperty`
+### `@JSONProperty`를 사용한 사용자 정의 속성 설정
 
 ```swift
 @Bourne
@@ -93,12 +93,12 @@ public struct User {
 }
 ```
 
-Parameters:
+매개변수:
 
-- `defaultValue`: Custom default value when JSON key is missing
-- `name`: Custom JSON key name (for snake_case to camelCase mapping)
+- `defaultValue`: JSON 키가 누락된 경우의 사용자 정의 기본값
+- `name`: 사용자 정의 JSON 키 이름 (snake_case에서 camelCase로의 매핑용)
 
-### Nested Models
+### 중첩 모델
 
 ```swift
 @Bourne
@@ -110,36 +110,36 @@ public struct Address {
 @Bourne
 public struct PersonWithAddress {
     public let name: String
-    public let address: Address  // Uses Address.empty if missing
+    public let address: Address  // 누락된 경우 Address.empty 사용
 }
 ```
 
-### Using the Copy Method
+### Copy 메서드 사용
 
-Since models are immutable by default, use `copy()` to create modified instances:
+모델은 기본적으로 불변이므로 `copy()`를 사용하여 수정된 인스턴스를 생성합니다:
 
 ```swift
 let person = Person(name: "Alice", age: 25, isChild: false)
-let updatedPerson = person.copy(age: 26)  // Only changes age
+let updatedPerson = person.copy(age: 26)  // age만 변경
 ```
 
-## Default Values
+## 기본값
 
-When a JSON key is missing, Bourne uses these defaults:
+JSON 키가 누락된 경우 Bourne은 다음 기본값을 사용합니다:
 
-| Type | Default Value |
-|------|---------------|
+| 타입 | 기본값 |
+|------|--------|
 | `String` | `""` |
 | `Int` | `0` |
 | `Bool` | `false` |
 | `Float` / `Double` / `CGFloat` | `0` |
 | `Array` | `[]` |
-| Custom `@Bourne` types | `.empty` |
-| Custom `@BourneEnum` types | First case (or custom via `@JSONProperty`) |
+| 사용자 정의 `@Bourne` 타입 | `.empty` |
+| 사용자 정의 `@BourneEnum` 타입 | 첫 번째 케이스 (또는 `@JSONProperty`로 사용자 정의) |
 
-## Generated Code Example
+## 생성되는 코드 예시
 
-For this struct:
+다음 구조체의 경우:
 
 ```swift
 @Bourne
@@ -150,7 +150,7 @@ public struct Person {
 }
 ```
 
-Bourne generates:
+Bourne은 다음을 생성합니다:
 
 ```swift
 extension Person: Decodable, Encodable, Sendable {
@@ -194,12 +194,6 @@ extension Person: Decodable, Encodable, Sendable {
 }
 ```
 
-## Documentation
-
-- [中文文档](README_CN.md)
-- [日本語ドキュメント](README_JA.md)
-- [한국어 문서](README_KO.md)
-
-## License
+## 라이선스
 
 MIT License
