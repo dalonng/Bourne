@@ -124,3 +124,18 @@ public struct BoolModel {
   public let trueValue: Bool
   public let falseValue: Bool
 }
+
+// MARK: - UUIDModel
+
+@Bourne
+public struct UUIDModel {
+  public let identifier: UUID
+}
+
+// MARK: - UUIDDefaultModel
+
+@Bourne
+public struct UUIDDefaultModel {
+  @JSONProperty(defaultValue: UUID(uuid: uuid_t(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15)))
+  public let identifier: UUID
+}

@@ -20,9 +20,16 @@ enum CodingKeysUtil {
   static func generateDecoder(structDecl: Struct) -> DeclSyntax {
     let decodingStatements = structDecl.storedVariables.map { variable in
       if variable.defaultExpr.isEmpty == false {
-        "self.\(variable.name) = try container.decodeIfPresent(\(variable.type).self, forKey: .\(variable.name)) ?? Self.\(variable.name)"
+        let tempName = "\(variable.name)Value"
+        return """
+          if let \(tempName) = try? container.decodeIfPresent(\(variable.type).self, forKey: .\(variable.name)) {
+            self.\(variable.name) = \(tempName) ?? Self.\(variable.name)
+          } else {
+            self.\(variable.name) = Self.\(variable.name)
+          }
+        """
       } else {
-        "self.\(variable.name) = try container.decodeIfPresent(\(variable.type).self, forKey: .\(variable.name)) ?? \(variable.jsonValueType.defaultValueExpr)"
+        return "self.\(variable.name) = try container.decodeIfPresent(\(variable.type).self, forKey: .\(variable.name)) ?? \(variable.jsonValueType.defaultValueExpr)"
       }
     }.joined(separator: "\n")
 

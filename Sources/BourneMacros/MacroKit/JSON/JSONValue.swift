@@ -5,6 +5,8 @@
 //  Created by d on 2025/01/28.
 //
 
+import Foundation
+
 enum JSONValue {
   case string(String)
   case number(Double)
@@ -21,6 +23,7 @@ enum JSONValueType {
   case boolean
   case array
   case object(String)
+  case uuid
   case invalid
 
   var defaultValueExpr: String {
@@ -31,6 +34,7 @@ enum JSONValueType {
     case .boolean: "false"
     case .array: "[]"
     case .object(let type): "\(type).empty"
+    case .uuid: "UUID()"
     case .invalid:
       fatalError("invalid case")
     }

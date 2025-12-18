@@ -25,6 +25,7 @@ extension TypeSyntax {
       "Bool",
       "String",
       "Character",
+      "UUID",
     ]
 
     return basicTypes.contains(simpleType.name.text)

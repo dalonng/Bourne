@@ -72,6 +72,10 @@ extension Variable {
       return .array
     }
 
+    if type == "UUID" {
+      return .uuid
+    }
+
     if typeAnnotation.isObject {
       return .object(type)
     }
