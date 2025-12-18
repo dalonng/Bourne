@@ -133,6 +133,7 @@ let updatedPerson = person.copy(age: 26)  // 只修改 age
 | `Int` | `0` |
 | `Bool` | `false` |
 | `Float` / `Double` / `CGFloat` | `0` |
+| `UUID` | `UUID()`（新的随机 UUID） |
 | `Array` | `[]` |
 | 自定义 `@Bourne` 类型 | `.empty` |
 | 自定义 `@BourneEnum` 类型 | 第一个 case（或通过 `@JSONProperty` 自定义） |

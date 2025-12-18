@@ -133,6 +133,7 @@ JSON 키가 누락된 경우 Bourne은 다음 기본값을 사용합니다:
 | `Int` | `0` |
 | `Bool` | `false` |
 | `Float` / `Double` / `CGFloat` | `0` |
+| `UUID` | `UUID()` (새로운 랜덤 UUID) |
 | `Array` | `[]` |
 | 사용자 정의 `@Bourne` 타입 | `.empty` |
 | 사용자 정의 `@BourneEnum` 타입 | 첫 번째 케이스 (또는 `@JSONProperty`로 사용자 정의) |

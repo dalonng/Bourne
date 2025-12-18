@@ -133,6 +133,7 @@ When a JSON key is missing, Bourne uses these defaults:
 | `Int` | `0` |
 | `Bool` | `false` |
 | `Float` / `Double` / `CGFloat` | `0` |
+| `UUID` | `UUID()` (new random UUID) |
 | `Array` | `[]` |
 | Custom `@Bourne` types | `.empty` |
 | Custom `@BourneEnum` types | First case (or custom via `@JSONProperty`) |

@@ -133,6 +133,7 @@ JSON キーが欠落している場合、Bourne は以下のデフォルト値�
 | `Int` | `0` |
 | `Bool` | `false` |
 | `Float` / `Double` / `CGFloat` | `0` |
+| `UUID` | `UUID()`（新しいランダム UUID） |
 | `Array` | `[]` |
 | カスタム `@Bourne` 型 | `.empty` |
 | カスタム `@BourneEnum` 型 | 最初のケース（または `@JSONProperty` でカスタム指定） |
