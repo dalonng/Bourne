@@ -79,6 +79,9 @@ public enum Gender: String, Sendable, Codable {
 
 @Bourne
 public struct Person2 {
+  @JSONProperty(defaultValue: UUID(uuid: uuid_t(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15)))
+  public let id: UUID
+
   public let name: String
 
   @JSONProperty(defaultValue: Gender.male)
@@ -92,7 +95,13 @@ public struct Person2 {
 }
 
 func main() {
-  let person = Person2(name: "张三", gender: .male, testEnum: .two, testEnum2: .blue)
+  let person = Person2(
+    id: UUID(),
+    name: "张三",
+    gender: .male,
+    testEnum: .two,
+    testEnum2: .blue,
+  )
   let encoder = JSONEncoder()
   do {
     let jsonData = try encoder.encode(person)
