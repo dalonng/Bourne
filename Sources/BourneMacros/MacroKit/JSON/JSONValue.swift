@@ -20,6 +20,7 @@ enum JSONValueType {
   case string
   case int
   case double
+  case decimal
   case boolean
   case array
   case object(String)
@@ -29,8 +30,9 @@ enum JSONValueType {
   var defaultValueExpr: String {
     switch self {
     case .string: "\"\""
-    case .int: "0"
+    case .int: "Int.zero"
     case .double: "0.0"
+    case .decimal: "Decimal.zero"
     case .boolean: "false"
     case .array: "[]"
     case .object(let type): "\(type).empty"

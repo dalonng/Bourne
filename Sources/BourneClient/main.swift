@@ -84,6 +84,8 @@ public struct Person2 {
 
   public let name: String
 
+  public let decimal: Decimal
+
   @JSONProperty(defaultValue: Gender.male)
   public let gender: Gender
 
@@ -98,6 +100,7 @@ func main() {
   let person = Person2(
     id: UUID(),
     name: "张三",
+    decimal: Decimal(string: "12345.6789")!,
     gender: .male,
     testEnum: .two,
     testEnum2: .blue,

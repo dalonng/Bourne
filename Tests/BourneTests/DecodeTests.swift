@@ -10,7 +10,7 @@ import Testing
 
 @testable import BourneMacros
 
-@Test func testDecode() throws {
+@Test func decode() throws {
   let person: Person = try """
   {
     "name": "张三",
@@ -26,7 +26,7 @@ import Testing
   #expect(person.gender == .male)
 }
 
-@Test func testZeroDecode() throws {
+@Test func zeroDecode() throws {
   let person: Person = try """
   {
   }
@@ -38,7 +38,7 @@ import Testing
   #expect(person.gender == .male)
 }
 
-@Test func testEnumDecodeWithoutRawType() throws {
+@Test func enumDecodeWithoutRawType() throws {
   let value: AccessLevel = try """
   "admin"
   """.forceDecode()
@@ -46,7 +46,7 @@ import Testing
   #expect(value == .admin)
 }
 
-@Test func testUUIDDecode() throws {
+@Test func uUIDDecode() throws {
   let expected = UUID(uuidString: "2C7800CC-48CF-4CA8-9B4A-999F5613FE72")!
   let model: UUIDModel = try """
   {
@@ -57,7 +57,7 @@ import Testing
   #expect(model.identifier == expected)
 }
 
-@Test func testUUIDDefaultDecode() throws {
+@Test func uUIDDefaultDecode() throws {
   let model: UUIDModel = try """
   {
   }
@@ -66,7 +66,7 @@ import Testing
   #expect(model.identifier.uuidString.isEmpty == false)
 }
 
-@Test func testUUIDDefaultFallbackWhenInvalid() throws {
+@Test func uUIDDefaultFallbackWhenInvalid() throws {
   let defaultValue = UUID(uuid: uuid_t(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15))
   let model: UUIDDefaultModel = try """
   {

@@ -60,6 +60,10 @@ extension Variable {
       return .double
     }
 
+    if type == "Decimal" {
+      return .decimal
+    }
+
     if typeAnnotation.kind == .arrayType {
       return .array
     }
