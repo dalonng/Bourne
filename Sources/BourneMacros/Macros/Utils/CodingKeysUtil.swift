@@ -23,7 +23,7 @@ enum CodingKeysUtil {
         let tempName = "\(variable.name)Value"
         return """
           if let \(tempName) = try? container.decodeIfPresent(\(variable.type).self, forKey: .\(variable.name)) {
-            self.\(variable.name) = \(tempName) ?? Self.\(variable.name)
+            self.\(variable.name) = \(tempName)
           } else {
             self.\(variable.name) = Self.\(variable.name)
           }
